@@ -1,0 +1,162 @@
+name: Build MagmaFlow for Windows
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: Download JavaFX for Windows
+      run: |
+        echo "Downloading JavaFX for Windows..."
+        Invoke-WebRequest -Uri "https://download2.gluonhq.com/openjfx/21.0.1/openjfx-21.0.1_windows-x64_bin-sdk.zip" -OutFile "javafx-sdk.zip"
+        Expand-Archive -Path "javafx-sdk.zip" -DestinationPath "."
+        Rename-Item "javafx-sdk-21.0.1" "javafx-sdk"
+    
+    - name: Check source files
+      run: |
+        echo "Checking source files..."
+        Get-ChildItem -Path "src" -Filter "*.java" -Recurse
+        Get-ChildItem -Path "src/main/java/com/carlosbuss/" -Force
+    
+    - name: Compile MagmaFlow application
+      run: |
+        echo "Compiling MagmaFlow application..."
+        New-Item -ItemType Directory -Force -Path "build/classes"
+        javac --module-path javafx-sdk/lib --add-modules javafx.controls,javafx.fxml,javafx.swing -d build/classes src/main/java/com/carlosbuss/*.java
+        echo "Compilation successful"
+    
+    - name: Create executable JAR
+      run: |
+        echo "Creating executable JAR..."
+        New-Item -ItemType Directory -Force -Path "dist"
+        Set-Location "build/classes"
+        jar --create --file "../../dist/MagmaFlow.jar" --main-class "com.carlosbuss.Magmaflow" .
+        Set-Location "../.."
+        echo "JAR created successfully"
+    
+    - name: Create Windows launcher script
+      run: |
+        echo "Creating Windows launcher..."
+        New-Item -ItemType Directory -Force -Path "dist/MagmaFlow"
+        
+        # Create batch file launcher
+        @"
+        @echo off
+        set DIR=%~dp0
+        java --module-path "%DIR%javafx-sdk\lib" --add-modules javafx.controls,javafx.fxml,javafx.swing -jar "%DIR%MagmaFlow.jar"
+        pause
+        "@ | Out-File -FilePath "dist/MagmaFlow/MagmaFlow.bat" -Encoding ASCII
+        
+        # Copy JAR and JavaFX
+        Copy-Item "dist/MagmaFlow.jar" "dist/MagmaFlow/"
+        Copy-Item "javafx-sdk" "dist/MagmaFlow/" -Recurse
+        
+        echo "Windows launcher created successfully"
+    
+    - name: Create PowerShell launcher
+      run: |
+        # Create PowerShell launcher (alternative)
+        @"
+        `$DIR = Split-Path -Parent `$MyInvocation.MyCommand.Definition
+        java --module-path "`$DIR\javafx-sdk\lib" --add-modules javafx.controls,javafx.fxml,javafx.swing -jar "`$DIR\MagmaFlow.jar"
+        Read-Host "Press Enter to exit"
+        "@ | Out-File -FilePath "dist/MagmaFlow/MagmaFlow.ps1" -Encoding UTF8
+        
+        echo "PowerShell launcher created"
+    
+    - name: Install Inno Setup
+      run: |
+        echo "Installing Inno Setup..."
+        choco install innosetup -y
+    
+    - name: Create Inno Setup script
+      run: |
+        # Create Inno Setup configuration
+        @"
+        #define MyAppName "MagmaFlow"
+        #define MyAppVersion "1.0.0"
+        #define MyAppPublisher "Carlos Buss"
+        #define MyAppExeName "MagmaFlow.bat"
+        
+        [Setup]
+        AppId={{12345678-1234-1234-1234-123456789ABC}
+        AppName={#MyAppName}
+        AppVersion={#MyAppVersion}
+        AppPublisher={#MyAppPublisher}
+        DefaultDirName={autopf}\{#MyAppName}
+        DisableProgramGroupPage=yes
+        LicenseFile=
+        OutputDir=dist
+        OutputBaseFilename=MagmaFlow-1.0.0-Windows-Setup
+        SetupIconFile=
+        Compression=lzma
+        SolidCompression=yes
+        WizardStyle=modern
+        ArchitecturesAllowed=x64
+        ArchitecturesInstallIn64BitMode=x64
+        
+        [Languages]
+        Name: "english"; MessagesFile: "compiler:Default.isl"
+        
+        [Tasks]
+        Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+        
+        [Files]
+        Source: "dist\MagmaFlow\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+        
+        [Icons]
+        Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+        Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+        
+        [Run]
+        Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+        "@ | Out-File -FilePath "setup.iss" -Encoding UTF8
+        
+        echo "Inno Setup script created"
+    
+    - name: Create Windows installer
+      run: |
+        echo "Creating Windows installer..."
+        & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup.iss
+        echo "Windows installer created successfully"
+        Get-ChildItem -Path "dist" -Filter "*.exe"
+    
+    - name: Create ZIP distribution
+      run: |
+        echo "Creating ZIP distribution..."
+        Compress-Archive -Path "dist/MagmaFlow/*" -DestinationPath "dist/MagmaFlow-1.0.0-Windows-Portable.zip"
+        echo "ZIP distribution created"
+    
+    - name: Upload Windows Installer
+      uses: actions/upload-artifact@v4
+      with:
+        name: MagmaFlow-Windows-Installer
+        path: dist/MagmaFlow-1.0.0-Windows-Setup.exe
+    
+    - name: Upload Windows Portable
+      uses: actions/upload-artifact@v4
+      with:
+        name: MagmaFlow-Windows-Portable
+        path: dist/MagmaFlow-1.0.0-Windows-Portable.zip
+    
+    - name: Upload Windows App Folder
+      uses: actions/upload-artifact@v4
+      with:
+        name: MagmaFlow-Windows-App
+        path: dist/MagmaFlow/
