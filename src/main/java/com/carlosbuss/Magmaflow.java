@@ -48,7 +48,7 @@ import java.util.regex.Matcher;
  * redraws the entire scene during interactive operations, the view remains
  * completely stable (no flicker) when hovering or dragging labels.
  */
-public class VolcanoPlotJavaFX extends Application {
+public class Magmaflow extends Application {
 
     /**
      * Internal representation of a single gene and its associated display
