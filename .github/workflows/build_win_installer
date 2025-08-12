@@ -21,7 +21,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     
-    - name: Download JavaFX for Windows
+    - name: Download JavaFX for Windows baby
       run: |
         echo "Downloading JavaFX for Windows..."
         Invoke-WebRequest -Uri "https://download2.gluonhq.com/openjfx/21.0.1/openjfx-21.0.1_windows-x64_bin-sdk.zip" -OutFile "javafx-sdk.zip"
