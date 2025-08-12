@@ -72,154 +72,96 @@ jobs:
       shell: powershell
     
     - name: Find Source Files
+      shell: bash
       run: |
-        echo "=== Debugging Repository Structure ==="
+        echo "Debugging Repository Structure"
         echo "Current directory contents:"
         ls -la
-        echo ""
-        echo "Looking for source directories:"
-        find . -type d -name "*java*" 2>/dev/null || echo "No java directories found with find"
-        echo ""
-        echo "Looking for .java files recursively:"
-        find . -name "*.java" -type f 2>/dev/null || echo "No .java files found with find"
-        echo ""
-        echo "Checking common source locations:"
-        ls -la src/ 2>/dev/null || echo "No src/ directory"
-        ls -la src/main/ 2>/dev/null || echo "No src/main/ directory"
-        ls -la src/main/java/ 2>/dev/null || echo "No src/main/java/ directory"
-        ls -la . | grep -i java || echo "No java files in root"
+        echo "Looking for Java files:"
+        find . -name "*.java" -type f 2>/dev/null || echo "No Java files found"
         
-        # Try to find the main class file
         MAIN_FILE=""
-        
-        # Check standard Maven structure first
         if [ -f "src/main/java/com/carlosbuss/MagmaFlow.java" ]; then
           MAIN_FILE="src/main/java/com/carlosbuss/MagmaFlow.java"
-          echo "Found: $MAIN_FILE"
         elif [ -f "src/main/java/com/carlosbuss/Magmaflow.java" ]; then
           MAIN_FILE="src/main/java/com/carlosbuss/Magmaflow.java"
-          echo "Found: $MAIN_FILE"
-        # Check alternative structures
         elif [ -f "src/com/carlosbuss/MagmaFlow.java" ]; then
           MAIN_FILE="src/com/carlosbuss/MagmaFlow.java"
-          echo "Found: $MAIN_FILE"
         elif [ -f "src/com/carlosbuss/Magmaflow.java" ]; then
           MAIN_FILE="src/com/carlosbuss/Magmaflow.java"
-          echo "Found: $MAIN_FILE"
-        # Check root directory
         elif [ -f "MagmaFlow.java" ]; then
           MAIN_FILE="MagmaFlow.java"
-          echo "Found: $MAIN_FILE"
         elif [ -f "Magmaflow.java" ]; then
           MAIN_FILE="Magmaflow.java"
-          echo "Found: $MAIN_FILE"
         else
-          echo "ERROR: Could not find main Java source file!"
-          echo "Please ensure your Java source file exists in one of these locations:"
-          echo "  - src/main/java/com/carlosbuss/MagmaFlow.java"
-          echo "  - src/main/java/com/carlosbuss/Magmaflow.java"
-          echo "  - src/com/carlosbuss/MagmaFlow.java"
-          echo "  - MagmaFlow.java (in root)"
+          echo "ERROR: Could not find Java source file"
           exit 1
         fi
         
         echo "MAIN_FILE=$MAIN_FILE" >> $GITHUB_ENV
-        echo "Selected main file: $MAIN_FILE"
-      shell: bash
+        echo "Found main file: $MAIN_FILE"
     
     - name: Compile Application
+      shell: bash
       run: |
-        echo "=== Starting Compilation ==="
+        echo "Starting compilation"
         echo "Main file: $MAIN_FILE"
-        echo "JavaFX path: $JAVAFX_PATH"
         
-        # Create build directory
         mkdir -p build/classes
         
-        # Determine source directory structure
-        if [[ "$MAIN_FILE" == src/main/java/* ]]; then
-          SOURCEPATH="src/main/java"
-          PACKAGE_STRUCTURE="src/main/java"
-        elif [[ "$MAIN_FILE" == src/* ]]; then
-          SOURCEPATH="src"
-          PACKAGE_STRUCTURE="src"
-        else
-          SOURCEPATH="."
-          PACKAGE_STRUCTURE="."
-        fi
-        
-        echo "Using sourcepath: $SOURCEPATH"
-        
-        # Determine modules based on Java version
         if [ "${{ matrix.java-version }}" = "11" ]; then
           MODULES="javafx.controls,javafx.fxml,javafx.web"
         else
           MODULES="javafx.controls,javafx.fxml,javafx.web,javafx.swing"
         fi
         
-        echo "Using modules: $MODULES"
+        # Determine source path
+        if [[ "$MAIN_FILE" == src/main/java/* ]]; then
+          SOURCEPATH="src/main/java"
+        elif [[ "$MAIN_FILE" == src/* ]]; then
+          SOURCEPATH="src"
+        else
+          SOURCEPATH="."
+        fi
         
-        # Compile with more verbose output
-        echo "Compiling $MAIN_FILE..."
         javac --module-path "$JAVAFX_PATH" \
               --add-modules "$MODULES" \
               -d build/classes \
               -cp "$SOURCEPATH" \
-              -verbose \
               "$MAIN_FILE"
         
-        COMPILE_RESULT=$?
-        echo "Compilation result: $COMPILE_RESULT"
-        
-        if [ $COMPILE_RESULT -eq 0 ]; then
-          echo "Compilation successful!"
-          echo "Build directory contents:"
-          find build/classes -type f -name "*.class" 2>/dev/null || echo "No .class files found"
+        if [ $? -eq 0 ]; then
+          echo "Compilation successful"
+          find build/classes -name "*.class" -type f
         else
-          echo "Compilation failed!"
+          echo "Compilation failed"
           exit 1
         fi
-      shell: bash
     
     - name: Determine Main Class
+      shell: bash
       run: |
-        echo "=== Determining Main Class ==="
-        echo "Looking for compiled classes..."
-        find build/classes -name "*.class" -type f || echo "No .class files found"
-        
-        # Check for various possible main class locations
-        MAIN_CLASS=""
+        echo "Looking for main class"
+        find build/classes -name "*.class" -type f
         
         if [ -f "build/classes/com/carlosbuss/MagmaFlow.class" ]; then
           MAIN_CLASS="com.carlosbuss.MagmaFlow"
-          echo "Found main class: $MAIN_CLASS"
         elif [ -f "build/classes/com/carlosbuss/Magmaflow.class" ]; then
           MAIN_CLASS="com.carlosbuss.Magmaflow"
-          echo "Found main class: $MAIN_CLASS"
         elif [ -f "build/classes/MagmaFlow.class" ]; then
           MAIN_CLASS="MagmaFlow"
-          echo "Found main class: $MAIN_CLASS"
         elif [ -f "build/classes/Magmaflow.class" ]; then
           MAIN_CLASS="Magmaflow"
-          echo "Found main class: $MAIN_CLASS"
         else
-          echo "ERROR: No compiled main class found!"
-          echo "Expected locations:"
-          echo "  - build/classes/com/carlosbuss/MagmaFlow.class"
-          echo "  - build/classes/com/carlosbuss/Magmaflow.class"
-          echo "  - build/classes/MagmaFlow.class"
-          echo "  - build/classes/Magmaflow.class"
-          echo ""
-          echo "Actual build/classes contents:"
-          find build/classes -type f 2>/dev/null || echo "build/classes directory is empty or doesn't exist"
+          echo "No compiled main class found"
           exit 1
         fi
         
         echo "MAIN_CLASS=$MAIN_CLASS" >> $GITHUB_ENV
         echo "Using main class: $MAIN_CLASS"
-      shell: bash
     
     - name: Create JAR
+      shell: bash
       run: |
         mkdir -p dist
         
@@ -228,22 +170,20 @@ jobs:
             --main-class "$MAIN_CLASS" \
             -C build/classes .
         
-        echo "JAR file created:"
+        echo "JAR created:"
         ls -lh "dist/MagmaFlow-${{ matrix.platform }}.jar"
-      shell: bash
     
     - name: Create Installer
+      shell: bash
       run: |
-        echo "Creating installer for ${{ matrix.platform }}..."
+        echo "Creating installer for ${{ matrix.platform }}"
         
-        # Determine modules
         if [ "${{ matrix.java-version }}" = "11" ]; then
           MODULES="javafx.controls,javafx.fxml,javafx.web"
         else
           MODULES="javafx.controls,javafx.fxml,javafx.web,javafx.swing"
         fi
         
-        # Create installer
         jpackage \
           --type ${{ matrix.installer-type }} \
           --name "MagmaFlow" \
@@ -258,9 +198,8 @@ jobs:
           --copyright "Copyright 2024 Carlos Buss" \
           --java-options "-Xmx1024m"
         
-        echo "Installer created:"
-        ls -lh dist/*.dmg dist/*.pkg dist/*.msi 2>/dev/null || echo "Checking for installer files..."
-      shell: bash
+        echo "Installer created"
+        ls -lh dist/
     
     - name: Upload Installer
       uses: actions/upload-artifact@v4
@@ -283,16 +222,12 @@ jobs:
     
     - name: Debug Info
       if: failure()
+      shell: bash
       run: |
         echo "Debug information:"
-        echo "Working directory:"
         ls -la
-        echo "Source files:"
-        find src/ -name "*.java" 2>/dev/null || echo "No Java files found"
-        echo "Build directory:"
+        find . -name "*.java" -type f 2>/dev/null || echo "No Java files"
         ls -la build/ 2>/dev/null || echo "No build directory"
-        echo "Environment variables:"
         echo "JAVAFX_PATH: $JAVAFX_PATH"
         echo "MAIN_CLASS: $MAIN_CLASS"
         echo "MAIN_FILE: $MAIN_FILE"
-      shell: bash
