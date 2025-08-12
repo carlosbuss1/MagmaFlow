@@ -71,12 +71,34 @@ jobs:
           exit 1
         fi
         
-        jpackage --type app-image --name "MagmaFlow" --app-version "1.0.0" --input dist/ --main-jar MagmaFlow.jar --main-class com.carlosbuss.MagmaFlow --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.swing --dest dist/ --vendor "Carlos Buss" --copyright "Copyright 2024 Carlos Buss" --mac-package-identifier "com.carlosbuss.magmaflow" --java-options "-Xmx2048m"
+        # Clean any existing app bundle first
+        rm -rf app_output/
+        mkdir -p app_output
         
-        if [ -d "dist/MagmaFlow.app" ]; then
+        jpackage \
+          --type app-image \
+          --name "MagmaFlow" \
+          --app-version "1.0.0" \
+          --input dist/ \
+          --main-jar MagmaFlow.jar \
+          --main-class com.carlosbuss.MagmaFlow \
+          --module-path $JAVAFX_PATH \
+          --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.swing \
+          --dest app_output/ \
+          --vendor "Carlos Buss" \
+          --copyright "Copyright 2024 Carlos Buss" \
+          --mac-package-identifier "com.carlosbuss.magmaflow" \
+          --java-options "-Xmx2048m"
+        
+        # Move the app bundle to dist directory
+        if [ -d "app_output/MagmaFlow.app" ]; then
+          mv "app_output/MagmaFlow.app" "dist/"
+          rm -rf app_output/
           echo "App bundle created successfully"
+          ls -la dist/MagmaFlow.app/
         else
           echo "App bundle creation failed!"
+          ls -la app_output/ || echo "No app_output directory"
           exit 1
         fi
     
