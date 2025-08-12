@@ -10,15 +10,18 @@ jobs:
     runs-on: windows-latest
     name: 🪟 Build MagmaFlow (Windows 10+)
 
+    # Make every run-step PowerShell by default
+    defaults:
+      run:
+        shell: pwsh
+
     env:
       APP_NAME: MagmaFlow
       APP_VERSION: "1.0.0"
       VENDOR: "Carlos Buss"
       COPYRIGHT: "Copyright 2025 Carlos Buss"
-      MAIN_PKG: "com.carlosbuss"
       # JavaFX 21 (Windows x64 SDK)
       JAVAFX_VERSION: "21.0.1"
-      JAVAFX_ZIP: "openjfx-21.0.1_windows-x64_bin-sdk.zip"
       JAVAFX_URL: "https://download2.gluonhq.com/openjfx/21.0.1/openjfx-21.0.1_windows-x64_bin-sdk.zip"
       JAVAFX_MODULES: "javafx.controls,javafx.fxml,javafx.web,javafx.swing"
 
@@ -33,97 +36,76 @@ jobs:
           java-version: '17'
 
       - name: 🧰 Install WiX Toolset (for MSI)
-        shell: powershell
         run: |
           choco install wixtoolset --no-progress -y
-          # Look for common WiX install locations
           $candidates = @(
             "${env:ProgramFiles(x86)}\WiX Toolset v3.14\bin",
             "${env:ProgramFiles(x86)}\WiX Toolset v3.11\bin",
             "${env:ProgramData}\chocolatey\lib\wixtoolset\tools"
           )
-          $wix = $null
-          foreach ($c in $candidates) {
-            if (Test-Path $c) { $wix = $c; break }
-          }
-          if (-not $wix) { Write-Error "WiX Toolset not found after install."; exit 1 }
-          "WIX=$wix" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          $wix = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
+          if (-not $wix) { throw "WiX Toolset not found after install." }
+          Add-Content -Path $env:GITHUB_ENV -Value "WIX=$wix"
           Write-Host "WiX path: $wix"
           Get-ChildItem $wix
 
       - name: 📦 Download JavaFX SDK (Windows)
-        shell: powershell
         run: |
           Write-Host '📦 Downloading JavaFX for Windows...'
           Invoke-WebRequest -Uri "$env:JAVAFX_URL" -OutFile 'openjfx-sdk.zip'
           Expand-Archive -Path 'openjfx-sdk.zip' -DestinationPath '.'
 
           $sdkDir = "javafx-sdk-$($env:JAVAFX_VERSION)"
-          if (!(Test-Path $sdkDir)) {
-            Write-Error "Expected folder $sdkDir after unzip, but it wasn't found."
-            exit 1
-          }
+          if (!(Test-Path $sdkDir)) { throw "Expected folder $sdkDir after unzip, not found." }
 
-          Rename-Item $sdkDir 'javafx-sdk'
+          Rename-Item $sdkDir 'javafx-sdk' -Force
           $javafxPath = (Resolve-Path '.\javafx-sdk\lib').Path
-          if (!(Test-Path $javafxPath)) {
-            Write-Error "JavaFX lib folder not found: $javafxPath"
-            exit 1
-          }
+          if (!(Test-Path $javafxPath)) { throw "JavaFX lib folder not found: $javafxPath" }
 
-          "JAVAFX_PATH=$javafxPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          Add-Content -Path $env:GITHUB_ENV -Value "JAVAFX_PATH=$javafxPath"
           Write-Host "JavaFX path set to: $javafxPath"
           Get-ChildItem $javafxPath
 
       - name: 🔍 Verify Source Files
-        shell: powershell
         run: |
-          if (!(Test-Path 'src\main\java')) { Write-Error 'src\main\java not found'; exit 1 }
+          if (!(Test-Path 'src\main\java')) { throw 'src\main\java not found' }
           $javaFiles = Get-ChildItem -Recurse -Path 'src\main\java' -Filter '*.java'
-          if ($javaFiles.Count -eq 0) { Write-Error 'No .java files found under src\main\java'; exit 1 }
+          if ($javaFiles.Count -eq 0) { throw 'No .java files found under src\main\java' }
           Write-Host "Found $($javaFiles.Count) Java source files."
 
       - name: 🔨 Compile (javac)
-        shell: powershell
         run: |
           New-Item -ItemType Directory -Force -Path 'build\classes' | Out-Null
-          Get-ChildItem -Recurse -Path 'src\main\java' -Filter '*.java' | ForEach-Object { $_.FullName } | Set-Content -Path 'sources.txt' -Encoding utf8
+          Get-ChildItem -Recurse -Path 'src\main\java' -Filter '*.java' |
+            ForEach-Object { $_.FullName } | Set-Content -Path 'sources.txt' -Encoding utf8
 
-          $modulePath = $env:JAVAFX_PATH
-          if (-not (Test-Path $modulePath)) { Write-Error "JAVAFX_PATH invalid: $modulePath"; exit 1 }
+          if (-not (Test-Path $env:JAVAFX_PATH)) { throw "JAVAFX_PATH invalid: $env:JAVAFX_PATH" }
 
           & javac `
-            --module-path "$modulePath" `
+            --module-path "$env:JAVAFX_PATH" `
             --add-modules "$env:JAVAFX_MODULES" `
             -encoding UTF-8 `
             -d 'build\classes' `
             @sources.txt
 
-          if ($LASTEXITCODE -ne 0) { Write-Error 'Compilation failed'; exit 1 }
+          if ($LASTEXITCODE -ne 0) { throw 'Compilation failed' }
           Write-Host '✅ Compilation OK'
           if (Test-Path 'build\classes\com\carlosbuss') { Get-ChildItem -Recurse 'build\classes\com\carlosbuss' }
 
       - name: 🧭 Detect Main Class
-        id: mainclass
-        shell: powershell
         run: |
           $c1 = 'build\classes\com\carlosbuss\Magmaflow.class'
           $c2 = 'build\classes\com\carlosbuss\MagmaFlow.class'
-          if (Test-Path $c1) {
-            $main = 'com.carlosbuss.Magmaflow'
-          } elseif (Test-Path $c2) {
-            $main = 'com.carlosbuss.MagmaFlow'
-          } else {
-            Write-Host 'Classes under build\classes:'
+          if    (Test-Path $c1) { $main = 'com.carlosbuss.Magmaflow' }
+          elseif (Test-Path $c2) { $main = 'com.carlosbuss.MagmaFlow' }
+          else {
             Get-ChildItem -Recurse 'build\classes' | ForEach-Object { $_.FullName }
-            Write-Error 'Main class not found (Magmaflow or MagmaFlow).'
-            exit 1
+            throw 'Main class not found (Magmaflow or MagmaFlow).'
           }
-          "MAIN_CLASS=$main" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          Add-Content -Path $env:GITHUB_ENV -Value "MAIN_CLASS=$main"
           Write-Host "Main class: $main"
 
       - name: 📦 Create JAR
-        shell: powershell
         run: |
           New-Item -ItemType Directory -Force -Path 'dist' | Out-Null
           $jarName = "$env:APP_NAME-windows.jar"
@@ -133,22 +115,18 @@ jobs:
                 --main-class "$env:MAIN_CLASS" `
                 -C 'build\classes' .
 
-          if ($LASTEXITCODE -ne 0) { Write-Error 'JAR creation failed'; exit 1 }
+          if ($LASTEXITCODE -ne 0) { throw 'JAR creation failed' }
           Write-Host "✅ JAR created: dist\$jarName"
           Get-Item "dist\$jarName" | Select-Object Name,Length,LastWriteTime
 
       - name: 🏗️ Package MSI (jpackage)
-        shell: powershell
         run: |
           $jar = "dist\$env:APP_NAME-windows.jar"
-          if (!(Test-Path $jar)) { Write-Error "JAR not found: $jar"; exit 1 }
+          if (!(Test-Path $jar)) { throw "JAR not found: $jar" }
 
-          # Ensure WiX on PATH for jpackage MSI backend
-          $wix = $env:WIX
-          if (!(Test-Path $wix)) { Write-Error "WIX not set or invalid: $wix"; exit 1 }
-          $env:PATH = "$wix;$env:PATH"
+          if (-not (Test-Path $env:WIX)) { throw "WIX not set or invalid: $env:WIX" }
+          $env:PATH = "$env:WIX;$env:PATH"
 
-          # Optional icon
           $iconPath = ".github\icons\app.ico"
           $args = @(
             '--type','msi',
@@ -172,13 +150,12 @@ jobs:
           if (Test-Path $iconPath) { $args += @('--icon', $iconPath) }
 
           & jpackage @args
-          if ($LASTEXITCODE -ne 0) { Write-Error 'jpackage failed'; exit 1 }
+          if ($LASTEXITCODE -ne 0) { throw 'jpackage failed' }
 
           Write-Host '✅ MSI created'
           Get-ChildItem 'dist\*.msi'
 
       - name: 📝 Create INSTALL notes
-        shell: powershell
         run: |
           $content = @"
 $($env:APP_NAME) Installation (Windows)
@@ -215,32 +192,14 @@ Built with ❤️ by Carlos Buss
 
       - name: 📋 Debug Information
         if: failure()
-        shell: powershell
         run: |
           Write-Host '🔍 Debug information:'
           Write-Host "PWD: $(Get-Location)"
-          Write-Host 'Directory listing:'
-          Get-ChildItem -Force
-
-          Write-Host 'Build directory:'
-          if (Test-Path 'build') { Get-ChildItem -Recurse -Force 'build' } else { Write-Host '(no build dir)' }
-
-          Write-Host 'Dist directory:'
-          if (Test-Path 'dist') { Get-ChildItem -Recurse -Force 'dist' } else { Write-Host '(no dist dir)' }
-
-          Write-Host 'Java version:'
-          & java -version 2>&1 | ForEach-Object { Write-Host $_ }
-
-          Write-Host 'jpackage version:'
-          & jpackage --version 2>&1 | ForEach-Object { Write-Host $_ }
-
-          Write-Host 'WiX path:'
-          Write-Host $env:WIX
-          if (Test-Path $env:WIX) { Get-ChildItem $env:WIX }
-
-          Write-Host 'JavaFX path:'
-          Write-Host $env:JAVAFX_PATH
-          if (Test-Path $env:JAVAFX_PATH) { Get-ChildItem $env:JAVAFX_PATH }
-
-          Write-Host 'sources.txt (if present):'
-          if (Test-Path 'sources.txt') { Get-Content 'sources.txt' } else { Write-Host '(no sources.txt)' }
+          Write-Host 'Directory listing:'; Get-ChildItem -Force
+          Write-Host 'Build directory:'; if (Test-Path 'build') { Get-ChildItem -Recurse -Force 'build' } else { Write-Host '(no build dir)' }
+          Write-Host 'Dist directory:'; if (Test-Path 'dist') { Get-ChildItem -Recurse -Force 'dist' } else { Write-Host '(no dist dir)' }
+          Write-Host 'Java version:'; & java -version 2>&1 | ForEach-Object { Write-Host $_ }
+          Write-Host 'jpackage version:'; & jpackage --version 2>&1 | ForEach-Object { Write-Host $_ }
+          Write-Host 'WiX path:'; Write-Host $env:WIX; if (Test-Path $env:WIX) { Get-ChildItem $env:WIX }
+          Write-Host 'JavaFX path:'; Write-Host $env:JAVAFX_PATH; if (Test-Path $env:JAVAFX_PATH) { Get-ChildItem $env:JAVAFX_PATH }
+          Write-Host 'sources.txt (if present):'; if (Test-Path 'sources.txt') { Get-Content 'sources.txt' } else { Write-Host '(no sources.txt)' }
