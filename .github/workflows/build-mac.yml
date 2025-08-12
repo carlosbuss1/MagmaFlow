@@ -1,6 +1,102 @@
-# Add this to your existing workflow after the DMG creation step
+name: Build MagmaFlow for macOS
 
-- name: Import Code Signing Certificate
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: Download JavaFX for macOS
+      run: |
+        echo "Downloading JavaFX for macOS..."
+        curl -L -o javafx-sdk.zip "https://download2.gluonhq.com/openjfx/21.0.1/openjfx-21.0.1_osx-x64_bin-sdk.zip"
+        unzip javafx-sdk.zip
+        mv javafx-sdk-21.0.1 javafx-sdk
+    
+    - name: Check source files
+      run: |
+        echo "Checking source files..."
+        find src -name "*.java" -type f
+        ls -la src/main/java/com/carlosbuss/
+    
+    - name: Compile MagmaFlow application
+      run: |
+        echo "Compiling MagmaFlow application..."
+        mkdir -p build/classes
+        javac --module-path javafx-sdk/lib --add-modules javafx.controls,javafx.fxml \
+              -d build/classes src/main/java/com/carlosbuss/*.java
+        echo "Compilation successful"
+    
+    - name: Create executable JAR
+      run: |
+        echo "Creating executable JAR..."
+        mkdir -p dist
+        cd build/classes
+        jar --create --file ../../dist/MagmaFlow.jar --main-class com.carlosbuss.Magmaflow .
+        cd ../..
+        echo "JAR created successfully"
+    
+    - name: Create macOS application bundle
+      run: |
+        echo "Creating macOS application bundle..."
+        mkdir -p dist/MagmaFlow.app/Contents/{MacOS,Resources}
+        
+        # Create Info.plist
+        cat > dist/MagmaFlow.app/Contents/Info.plist << EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>CFBundleExecutable</key>
+            <string>MagmaFlow</string>
+            <key>CFBundleIdentifier</key>
+            <string>com.carlosbuss.magmaflow</string>
+            <key>CFBundleName</key>
+            <string>MagmaFlow</string>
+            <key>CFBundleVersion</key>
+            <string>1.0.0</string>
+            <key>CFBundleShortVersionString</key>
+            <string>1.0.0</string>
+            <key>CFBundlePackageType</key>
+            <string>APPL</string>
+        </dict>
+        </plist>
+        EOF
+        
+        # Create launcher script
+        cat > dist/MagmaFlow.app/Contents/MacOS/MagmaFlow << 'EOF'
+        #!/bin/bash
+        DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+        java --module-path "$DIR/../Resources/javafx-sdk/lib" \
+             --add-modules javafx.controls,javafx.fxml \
+             -jar "$DIR/../Resources/MagmaFlow.jar"
+        EOF
+        
+        chmod +x dist/MagmaFlow.app/Contents/MacOS/MagmaFlow
+        
+        # Copy JAR and JavaFX to Resources
+        cp dist/MagmaFlow.jar dist/MagmaFlow.app/Contents/Resources/
+        cp -r javafx-sdk dist/MagmaFlow.app/Contents/Resources/
+        
+        echo "App bundle created successfully"
+        ls -la dist/MagmaFlow.app/Contents/
+    
+    - name: Import Code Signing Certificate
   if: ${{ secrets.MACOS_CERTIFICATE != '' }}
   run: |
     # Create temporary keychain
