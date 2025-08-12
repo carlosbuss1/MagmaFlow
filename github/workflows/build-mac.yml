@@ -1,24 +1,27 @@
 name: 🍎 Build macOS DMG Installer
 
 on:
+  workflow_dispatch:    # can run manually
   push:
     branches: [ main, master ]
-  workflow_dispatch:
 
 jobs:
   build-mac:
     runs-on: macos-latest
     steps:
 
+    # 1. Checkout your repository
     - name: 📥 Checkout Repository
       uses: actions/checkout@v4
 
+    # 2. Install JDK 17 (matches JavaFX 17)
     - name: ☕ Set up JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
-        distribution: 'temurin'
+        distribution: temurin
+        java-version: 17
 
+    # 3. Download JavaFX 17 SDK for macOS
     - name: 📦 Download JavaFX 17 SDK
       run: |
         wget -q https://download2.gluonhq.com/openjfx/17.0.10/openjfx-17.0.10_osx-x64_bin-sdk.zip
@@ -26,16 +29,19 @@ jobs:
         mv javafx-sdk-17.0.10 javafx-sdk
         echo "JAVAFX_PATH=$(pwd)/javafx-sdk/lib" >> $GITHUB_ENV
 
+    # 4. Prepare App Icon (.icns) from MagmaFlow_logo.PNG
     - name: 🎨 Prepare App Icon (.icns)
       run: |
         mkdir -p icons
-        cp image.jpg icons/magmaflow.jpg
-        sips -s format png icons/magmaflow.jpg --out icons/magmaflow.png
+        # Use your PNG directly from repo root
+        cp MagmaFlow_logo.PNG icons/magmaflow.png
+        # Create .iconset for conversion
         mkdir -p icons/magmaflow.iconset
         cp icons/magmaflow.png icons/magmaflow.iconset/icon_512x512.png
         iconutil -c icns icons/magmaflow.iconset -o icons/MagmaFlow.icns
         echo "ICON_PATH=$(pwd)/icons/MagmaFlow.icns" >> $GITHUB_ENV
 
+    # 5. Compile your JavaFX source
     - name: 🔨 Compile All Sources
       run: |
         mkdir -p build/classes
@@ -44,38 +50,40 @@ jobs:
               -d build/classes \
               $(find src/main/java -name "*.java")
 
+    # 6. Create executable JAR
     - name: 📦 Create JAR File
       run: |
         mkdir -p dist
         jar --create \
             --file dist/MagmaFlow.jar \
-            --main-class com.carlosbuss.MagmaFlow \
+            --main-class Magmaflow \
             -C build/classes .
 
+    # 7. Create macOS .app bundle with jpackage
     - name: 🏗️ Create macOS App Bundle
       run: |
         jpackage \
           --type app-image \
           --name "MagmaFlow" \
           --app-version "1.0.0" \
-          --input dist/ \
+          --input dist \
           --main-jar MagmaFlow.jar \
-          --main-class com.carlosbuss.MagmaFlow \
+          --main-class Magmaflow \
           --icon "$ICON_PATH" \
           --module-path $JAVAFX_PATH \
           --add-modules javafx.controls,javafx.fxml,javafx.web \
-          --dest dist/ \
+          --dest dist \
           --vendor "Carlos Buss" \
           --copyright "Copyright © 2025 Carlos Buss" \
           --mac-package-identifier "com.carlosbuss.magmaflow" \
           --java-options "-Xmx2048m"
 
+    # 8. Wrap the .app bundle in a professional DMG
     - name: 📀 Create Professional DMG Installer
       run: |
         APP_NAME="MagmaFlow"
         DMG_NAME="MagmaFlow-1.0.0-macOS"
         VOLUME_NAME="MagmaFlow Installer"
-        
         APP_SIZE=$(du -sm "dist/$APP_NAME.app" | cut -f1)
         DMG_SIZE=$((APP_SIZE + 20))m
 
@@ -87,27 +95,26 @@ jobs:
 
         cat > "/Volumes/$VOLUME_NAME/How to Install.txt" << 'EOF'
         Welcome to MagmaFlow!
-        
+
         To install MagmaFlow:
         1. Drag the MagmaFlow app to the Applications folder
         2. Launch MagmaFlow from your Applications folder
-        3. Enjoy!
-        
-        If you see a security warning:
+
+        ⚠ First-time open on macOS will show "unidentified developer" warning:
         - Right-click the app → Open → Open anyway
-        - Or go to System Preferences → Security & Privacy → Allow
-        
+        - Or System Settings → Privacy & Security → Allow
+
         Built with ❤️ by Carlos Buss
         EOF
 
-        # Optional Finder layout (may fail in CI, safe to skip)
+        # Finder layout (optional)
         cat > setup_dmg.applescript << 'EOF'
         tell application "Finder"
           tell disk "MagmaFlow Installer"
             open
             set current view of container window to icon view
             set toolbar visible of container window to false
-            set the bounds of container window to {100, 100, 800, 500}
+            set bounds of container window to {100, 100, 800, 500}
             set viewOptions to the icon view options of container window
             set arrangement of viewOptions to not arranged
             set icon size of viewOptions to 128
@@ -121,26 +128,24 @@ jobs:
           end tell
         end tell
         EOF
-        osascript setup_dmg.applescript || echo "⚠ Skipped Finder layout"
+        osascript setup_dmg.applescript || echo "⚠ Skip Finder layout on CI"
 
         hdiutil detach "/Volumes/$VOLUME_NAME"
         hdiutil convert temp.dmg -format UDZO -o "dist/$DMG_NAME.dmg"
         rm temp.dmg setup_dmg.applescript
 
-        echo "✅ DMG created: dist/$DMG_NAME.dmg"
-        ls -lh dist/*.dmg
-
+    # 9. Upload DMG installer artifact
     - name: ⬆ Upload DMG Installer
       uses: actions/upload-artifact@v4
       with:
         name: MagmaFlow-macOS-Installer
         path: dist/*.dmg
-        retention-days: 90
+        retention-days: 30
 
+    # 10. Upload raw .app bundle artifact
     - name: ⬆ Upload App Bundle
       uses: actions/upload-artifact@v4
       with:
         name: MagmaFlow-macOS-App
         path: dist/*.app/**
         retention-days: 30
-
