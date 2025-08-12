@@ -38,7 +38,7 @@ jobs:
       run: |
         echo "Compiling MagmaFlow application..."
         mkdir -p build/classes
-        javac --module-path javafx-sdk/lib --add-modules javafx.controls,javafx.fxml -d build/classes src/main/java/com/carlosbuss/*.java
+        javac --module-path javafx-sdk/lib --add-modules javafx.controls,javafx.fxml,javafx.swing -d build/classes src/main/java/com/carlosbuss/*.java
         echo "Compilation successful"
     
     - name: Create executable JAR
@@ -84,7 +84,7 @@ jobs:
         cat > dist/MagmaFlow.app/Contents/MacOS/MagmaFlow << 'SCRIPT_EOF'
         #!/bin/bash
         DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-        java --module-path "$DIR/../Resources/javafx-sdk/lib" --add-modules javafx.controls,javafx.fxml -jar "$DIR/../Resources/MagmaFlow.jar"
+        java --module-path "$DIR/../Resources/javafx-sdk/lib" --add-modules javafx.controls,javafx.fxml,javafx.swing -jar "$DIR/../Resources/MagmaFlow.jar"
         SCRIPT_EOF
         
         chmod +x dist/MagmaFlow.app/Contents/MacOS/MagmaFlow
