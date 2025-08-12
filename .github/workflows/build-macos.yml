@@ -1,4 +1,4 @@
-name: 🍎 Build macOS DMG Installer
+name: Build macOS DMG Installer
 
 on:
   push:
@@ -7,109 +7,89 @@ on:
 
 jobs:
   build-mac:
-    name: 🔨 Build MagmaFlow for macOS
+    name: Build MagmaFlow for macOS
     runs-on: macos-latest
     
     steps:
-    - name: 📥 Checkout Repository
+    - name: Checkout Repository
       uses: actions/checkout@v4
     
-    - name: ☕ Set up JDK 17
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
     
-    - name: 📦 Download JavaFX SDK
+    - name: Download JavaFX SDK
       run: |
-        echo "📦 Downloading JavaFX for macOS..."
+        echo "Downloading JavaFX for macOS..."
         curl -L -o openjfx-21.0.1_osx-x64_bin-sdk.zip https://download2.gluonhq.com/openjfx/21.0.1/openjfx-21.0.1_osx-x64_bin-sdk.zip
         unzip -q openjfx-21.0.1_osx-x64_bin-sdk.zip
         mv javafx-sdk-21.0.1 javafx-sdk
         echo "JAVAFX_PATH=$(pwd)/javafx-sdk/lib" >> $GITHUB_ENV
     
-    - name: 🔍 Verify Source Files
+    - name: Verify Source Files
       run: |
-        echo "🔍 Checking source files..."
-        find src/ -name "*.java" -type f || echo "❌ No Java files found in src/"
-        ls -la src/main/java/com/carlosbuss/ || echo "❌ MagmaFlow.java not found at expected location"
+        echo "Checking source files..."
+        find src/ -name "*.java" -type f || echo "No Java files found in src/"
+        ls -la src/main/java/com/carlosbuss/ || echo "MagmaFlow.java not found at expected location"
     
-    - name: 🔨 Compile JavaFX Application
+    - name: Compile JavaFX Application
       run: |
-        echo "🔨 Compiling MagmaFlow application..."
+        echo "Compiling MagmaFlow application..."
         mkdir -p build/classes
         
         find src/main/java -name "*.java" > sources.txt
         
         if [ -s sources.txt ]; then
-          javac --module-path $JAVAFX_PATH \
-                --add-modules javafx.controls,javafx.fxml,javafx.web \
-                -d build/classes \
-                @sources.txt
-          echo "✅ Compilation successful"
+          javac --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml,javafx.web -d build/classes @sources.txt
+          echo "Compilation successful"
         else
-          echo "❌ No Java source files found!"
+          echo "No Java source files found!"
           exit 1
         fi
     
-    - name: 📦 Create JAR File
+    - name: Create JAR File
       run: |
-        echo "📦 Creating executable JAR..."
+        echo "Creating executable JAR..."
         mkdir -p dist
         
         if [ ! -d "build/classes" ] || [ -z "$(ls -A build/classes)" ]; then
-          echo "❌ No compiled classes found!"
+          echo "No compiled classes found!"
           exit 1
         fi
         
-        jar --create \
-            --file dist/MagmaFlow.jar \
-            --main-class com.carlosbuss.MagmaFlow \
-            -C build/classes .
-        
-        echo "✅ JAR created: $(ls -lh dist/MagmaFlow.jar)"
+        jar --create --file dist/MagmaFlow.jar --main-class com.carlosbuss.MagmaFlow -C build/classes .
+        echo "JAR created successfully"
     
-    - name: 🏗️ Create macOS App Bundle
+    - name: Create macOS App Bundle
       run: |
-        echo "🏗️ Creating macOS application bundle..."
+        echo "Creating macOS application bundle..."
         
         if [ ! -f "dist/MagmaFlow.jar" ] || [ ! -s "dist/MagmaFlow.jar" ]; then
-          echo "❌ JAR file missing or empty!"
+          echo "JAR file missing or empty!"
           exit 1
         fi
         
-        jpackage \
-          --type app-image \
-          --name "MagmaFlow" \
-          --app-version "1.0.0" \
-          --input dist/ \
-          --main-jar MagmaFlow.jar \
-          --main-class com.carlosbuss.MagmaFlow \
-          --module-path $JAVAFX_PATH \
-          --add-modules javafx.controls,javafx.fxml,javafx.web \
-          --dest dist/ \
-          --vendor "Carlos Buss" \
-          --copyright "Copyright © 2024 Carlos Buss" \
-          --mac-package-identifier "com.carlosbuss.magmaflow" \
-          --java-options "-Xmx2048m"
+        jpackage --type app-image --name "MagmaFlow" --app-version "1.0.0" --input dist/ --main-jar MagmaFlow.jar --main-class com.carlosbuss.MagmaFlow --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml,javafx.web --dest dist/ --vendor "Carlos Buss" --copyright "Copyright 2024 Carlos Buss" --mac-package-identifier "com.carlosbuss.magmaflow" --java-options "-Xmx2048m"
         
         if [ -d "dist/MagmaFlow.app" ]; then
-          echo "✅ App bundle created successfully"
+          echo "App bundle created successfully"
         else
-          echo "❌ App bundle creation failed!"
+          echo "App bundle creation failed!"
           exit 1
         fi
     
-    - name: 📀 Create DMG Installer
+    - name: Create DMG Installer
       run: |
-        echo "📀 Creating DMG installer..."
+        echo "Creating DMG installer..."
         
         APP_NAME="MagmaFlow"
         DMG_NAME="MagmaFlow-1.0.0-macOS"
         VOLUME_NAME="MagmaFlow Installer"
         
         if [ ! -d "dist/$APP_NAME.app" ]; then
-          echo "❌ App bundle not found!"
+          echo "App bundle not found!"
           exit 1
         fi
         
@@ -117,33 +97,14 @@ jobs:
         cp -R "dist/$APP_NAME.app" dmg_contents/
         ln -s /Applications dmg_contents/Applications
         
-        cat > dmg_contents/README.txt << 'EOF'
-Welcome to MagmaFlow!
-
-To install MagmaFlow:
-1. Drag the MagmaFlow app to the Applications folder
-2. Launch MagmaFlow from your Applications folder
-
-If you see a security warning:
-- Right-click the app → Open → Open anyway
-- Or go to System Preferences → Security & Privacy → Allow
-
-Built with ❤️ by Carlos Buss
-EOF
-        
-        hdiutil create -volname "$VOLUME_NAME" \
-                      -srcfolder dmg_contents \
-                      -ov \
-                      -format UDZO \
-                      -fs HFS+ \
-                      "dist/$DMG_NAME.dmg"
+        hdiutil create -volname "$VOLUME_NAME" -srcfolder dmg_contents -ov -format UDZO -fs HFS+ "dist/$DMG_NAME.dmg"
         
         rm -rf dmg_contents
         
-        echo "✅ DMG created: $DMG_NAME.dmg"
+        echo "DMG created successfully"
         ls -lh dist/*.dmg
     
-    - name: ⬆️ Upload DMG Installer
+    - name: Upload DMG Installer
       uses: actions/upload-artifact@v4
       with:
         name: MagmaFlow-macOS-Installer
@@ -151,7 +112,7 @@ EOF
         retention-days: 90
       if: success()
     
-    - name: ⬆️ Upload App Bundle
+    - name: Upload App Bundle
       uses: actions/upload-artifact@v4
       with:
         name: MagmaFlow-macOS-App
@@ -159,10 +120,10 @@ EOF
         retention-days: 30
       if: success()
     
-    - name: 📋 Debug Information
+    - name: Debug Information
       if: failure()
       run: |
-        echo "🔍 Debug information:"
+        echo "Debug information:"
         echo "Current directory contents:"
         ls -la
         echo "Build directory contents:"
