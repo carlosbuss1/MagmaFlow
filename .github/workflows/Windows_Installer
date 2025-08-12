@@ -1,16 +1,15 @@
-name: Build Windows MSI Installer
+name: Build Windows MSI (clean)
 
 on:
+  workflow_dispatch:
   push:
     branches: [ main, master ]
-  workflow_dispatch:
 
 jobs:
-  build-windows:
+  build:
     runs-on: windows-latest
-    name: Build MagmaFlow (Windows)
 
-    # Force PowerShell Core for every step
+    # Force every run step to PowerShell Core
     defaults:
       run:
         shell: pwsh
@@ -28,13 +27,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17 (Temurin)
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
 
-      - name: Install WiX Toolset
+      - name: Install WiX
         run: |
           choco install wixtoolset --no-progress -y
           $candidates = @(
@@ -43,43 +42,40 @@ jobs:
             "${env:ProgramData}\chocolatey\lib\wixtoolset\tools"
           )
           $wix = $candidates | Where-Object { Test-Path $_ } | Select-Object -First 1
-          if (-not $wix) { throw "WiX Toolset not found after install." }
+          if (-not $wix) { throw "WiX not found after install." }
           Add-Content -Path $env:GITHUB_ENV -Value "WIX=$wix"
 
-      - name: Download JavaFX SDK
+      - name: Download JavaFX (Windows)
         run: |
           Invoke-WebRequest -Uri "$env:JAVAFX_URL" -OutFile 'openjfx-sdk.zip'
           Expand-Archive -Path 'openjfx-sdk.zip' -DestinationPath '.'
           $sdkDir = "javafx-sdk-$($env:JAVAFX_VERSION)"
-          if (!(Test-Path $sdkDir)) { throw "Expected folder $sdkDir after unzip, not found." }
+          if (!(Test-Path $sdkDir)) { throw "Expected folder $sdkDir after unzip." }
           Rename-Item $sdkDir 'javafx-sdk' -Force
           $javafxPath = (Resolve-Path '.\javafx-sdk\lib').Path
-          if (!(Test-Path $javafxPath)) { throw "JavaFX lib folder not found: $javafxPath" }
+          if (!(Test-Path $javafxPath)) { throw "JavaFX lib not found: $javafxPath" }
           Add-Content -Path $env:GITHUB_ENV -Value "JAVAFX_PATH=$javafxPath"
           Get-ChildItem $javafxPath
 
-      - name: Verify source files
+      - name: Verify sources
         run: |
           if (!(Test-Path 'src\main\java')) { throw 'src\main\java not found' }
-          $javaFiles = Get-ChildItem -Recurse -Path 'src\main\java' -Filter '*.java'
-          if ($javaFiles.Count -eq 0) { throw 'No .java files found under src\main\java' }
-          "Found $($javaFiles.Count) Java source files" | Write-Host
+          $list = Get-ChildItem -Recurse -Path 'src\main\java' -Filter '*.java'
+          if ($list.Count -eq 0) { throw 'No .java sources found' }
+          "Sources: $($list.Count)" | Write-Host
 
-      - name: Compile (javac)
+      - name: Compile
         run: |
           New-Item -ItemType Directory -Force -Path 'build\classes' | Out-Null
           Get-ChildItem -Recurse -Path 'src\main\java' -Filter '*.java' |
             ForEach-Object { $_.FullName } | Set-Content -Path 'sources.txt' -Encoding utf8
-
           if (-not (Test-Path $env:JAVAFX_PATH)) { throw "JAVAFX_PATH invalid: $env:JAVAFX_PATH" }
-
           & javac `
             --module-path "$env:JAVAFX_PATH" `
             --add-modules "$env:JAVAFX_MODULES" `
             -encoding UTF-8 `
             -d 'build\classes' `
             @sources.txt
-
           if ($LASTEXITCODE -ne 0) { throw 'Compilation failed' }
           if (Test-Path 'build\classes\com\carlosbuss') { Get-ChildItem -Recurse 'build\classes\com\carlosbuss' }
 
@@ -89,10 +85,7 @@ jobs:
           $c2 = 'build\classes\com\carlosbuss\MagmaFlow.class'
           if    (Test-Path $c1) { $main = 'com.carlosbuss.Magmaflow' }
           elseif (Test-Path $c2) { $main = 'com.carlosbuss.MagmaFlow' }
-          else {
-            Get-ChildItem -Recurse 'build\classes' | ForEach-Object { $_.FullName }
-            throw 'Main class not found (Magmaflow or MagmaFlow).'
-          }
+          else { throw 'Main class not found (Magmaflow/MagmaFlow).' }
           Add-Content -Path $env:GITHUB_ENV -Value "MAIN_CLASS=$main"
 
       - name: Create JAR
@@ -110,7 +103,7 @@ jobs:
         run: |
           $jar = "dist\$env:APP_NAME-windows.jar"
           if (!(Test-Path $jar)) { throw "JAR not found: $jar" }
-          if (-not (Test-Path $env:WIX)) { throw "WIX not set or invalid: $env:WIX" }
+          if (-not (Test-Path $env:WIX)) { throw "WIX invalid: $env:WIX" }
           $env:PATH = "$env:WIX;$env:PATH"
 
           $iconPath = ".github\icons\app.ico"
@@ -138,29 +131,6 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'jpackage failed' }
           Get-ChildItem 'dist\*.msi'
 
-      - name: Create INSTALL notes
-        run: |
-          $content = @"
-$($env:APP_NAME) Installation (Windows)
-======================================
-
-System Requirements: Windows 10+
-Java Version (runtime): 17
-JavaFX Version: $($env:JAVAFX_VERSION)
-
-Install:
-1) Download the MSI from the workflow artifacts
-2) Double-click to run and follow the wizard
-3) Launch from the Start Menu or Desktop shortcut
-
-Troubleshooting:
-- If SmartScreen shows a warning: click 'More info' → 'Run anyway'
-- Try running as Administrator if your IT policy blocks installs
-"@
-          $path = "dist\INSTALL-Windows.txt"
-          $content | Set-Content -Path $path -Encoding utf8
-          Get-Item $path | Select-Object Name,Length,LastWriteTime
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -168,23 +138,4 @@ Troubleshooting:
           path: |
             dist\*.msi
             dist\*.jar
-            dist\INSTALL-*.txt
-          retention-days: 90
-
-      - name: Debug info (on failure)
-        if: failure()
-        run: |
-          "PWD: $(Get-Location)" | Write-Host
-          "Build dir:" | Write-Host
-          if (Test-Path 'build') { Get-ChildItem -Recurse -Force 'build' } else { '(no build dir)' | Write-Host }
-          "Dist dir:" | Write-Host
-          if (Test-Path 'dist') { Get-ChildItem -Recurse -Force 'dist' } else { '(no dist dir)' | Write-Host }
-          'Java version:' | Write-Host
-          & java -version 2>&1 | ForEach-Object { Write-Host $_ }
-          'jpackage version:' | Write-Host
-          & jpackage --version 2>&1 | ForEach-Object { Write-Host $_ }
-          'WIX:' | Write-Host
-          Write-Host $env:WIX
-          'JavaFX PATH:' | Write-Host
-          Write-Host $env:JAVAFX_PATH
-          if (Test-Path 'sources.txt') { 'sources.txt:' | Write-Host; Get-Content 'sources.txt' }
+          retention-days: 30
