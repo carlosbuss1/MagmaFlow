@@ -3,55 +3,57 @@ name: 🍎 Build macOS DMG Installer
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch:  # Allows manual trigger
+  workflow_dispatch:
 
 jobs:
   build-mac:
-    name: 🔨 Build MagmaFlow for macOS
     runs-on: macos-latest
-    
     steps:
+
     - name: 📥 Checkout Repository
       uses: actions/checkout@v4
-    
+
     - name: ☕ Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
-    
-    - name: 📦 Download JavaFX SDK
+
+    - name: 📦 Download JavaFX 17 SDK
       run: |
-        echo "📦 Downloading JavaFX for macOS..."
-        wget -q https://download2.gluonhq.com/openjfx/21.0.1/openjfx-21.0.1_osx-x64_bin-sdk.zip
-        unzip -q openjfx-21.0.1_osx-x64_bin-sdk.zip
-        mv javafx-sdk-21.0.1 javafx-sdk
+        wget -q https://download2.gluonhq.com/openjfx/17.0.10/openjfx-17.0.10_osx-x64_bin-sdk.zip
+        unzip -q openjfx-17.0.10_osx-x64_bin-sdk.zip
+        mv javafx-sdk-17.0.10 javafx-sdk
         echo "JAVAFX_PATH=$(pwd)/javafx-sdk/lib" >> $GITHUB_ENV
-    
-    - name: 🔨 Compile JavaFX Application
+
+    - name: 🎨 Prepare App Icon (.icns)
       run: |
-        echo "🔨 Compiling MagmaFlow application..."
+        mkdir -p icons
+        cp image.jpg icons/magmaflow.jpg
+        sips -s format png icons/magmaflow.jpg --out icons/magmaflow.png
+        mkdir -p icons/magmaflow.iconset
+        cp icons/magmaflow.png icons/magmaflow.iconset/icon_512x512.png
+        iconutil -c icns icons/magmaflow.iconset -o icons/MagmaFlow.icns
+        echo "ICON_PATH=$(pwd)/icons/MagmaFlow.icns" >> $GITHUB_ENV
+
+    - name: 🔨 Compile All Sources
+      run: |
         mkdir -p build/classes
-        
         javac --module-path $JAVAFX_PATH \
               --add-modules javafx.controls,javafx.fxml,javafx.web \
               -d build/classes \
-              src/main/java/com/carlosbuss/MagmaFlow.java
-    
+              $(find src/main/java -name "*.java")
+
     - name: 📦 Create JAR File
       run: |
-        echo "📦 Creating executable JAR..."
         mkdir -p dist
-        
         jar --create \
             --file dist/MagmaFlow.jar \
             --main-class com.carlosbuss.MagmaFlow \
             -C build/classes .
-    
+
     - name: 🏗️ Create macOS App Bundle
       run: |
-        echo "🏗️ Creating macOS application bundle..."
-        
         jpackage \
           --type app-image \
           --name "MagmaFlow" \
@@ -59,35 +61,30 @@ jobs:
           --input dist/ \
           --main-jar MagmaFlow.jar \
           --main-class com.carlosbuss.MagmaFlow \
+          --icon "$ICON_PATH" \
           --module-path $JAVAFX_PATH \
           --add-modules javafx.controls,javafx.fxml,javafx.web \
           --dest dist/ \
           --vendor "Carlos Buss" \
-          --copyright "Copyright © 2024 Carlos Buss" \
+          --copyright "Copyright © 2025 Carlos Buss" \
           --mac-package-identifier "com.carlosbuss.magmaflow" \
           --java-options "-Xmx2048m"
-    
+
     - name: 📀 Create Professional DMG Installer
       run: |
-        echo "📀 Creating professional DMG installer..."
-        
         APP_NAME="MagmaFlow"
         DMG_NAME="MagmaFlow-1.0.0-macOS"
         VOLUME_NAME="MagmaFlow Installer"
         
-        # Create temporary DMG
-        hdiutil create -size 300m -fs HFS+ -volname "$VOLUME_NAME" temp.dmg
-        
-        # Mount the DMG
+        APP_SIZE=$(du -sm "dist/$APP_NAME.app" | cut -f1)
+        DMG_SIZE=$((APP_SIZE + 20))m
+
+        hdiutil create -size $DMG_SIZE -fs HFS+ -volname "$VOLUME_NAME" temp.dmg
         hdiutil attach temp.dmg -mountpoint "/Volumes/$VOLUME_NAME"
-        
-        # Copy app to DMG
+
         cp -R "dist/$APP_NAME.app" "/Volumes/$VOLUME_NAME/"
-        
-        # Create Applications symlink
         ln -s /Applications "/Volumes/$VOLUME_NAME/Applications"
-        
-        # Add installation instructions
+
         cat > "/Volumes/$VOLUME_NAME/How to Install.txt" << 'EOF'
         Welcome to MagmaFlow!
         
@@ -102,8 +99,8 @@ jobs:
         
         Built with ❤️ by Carlos Buss
         EOF
-        
-        # Customize DMG appearance
+
+        # Optional Finder layout (may fail in CI, safe to skip)
         cat > setup_dmg.applescript << 'EOF'
         tell application "Finder"
           tell disk "MagmaFlow Installer"
@@ -124,27 +121,26 @@ jobs:
           end tell
         end tell
         EOF
-        
-        osascript setup_dmg.applescript || echo "⚠️ DMG appearance setup skipped"
-        
-        # Finalize DMG
+        osascript setup_dmg.applescript || echo "⚠ Skipped Finder layout"
+
         hdiutil detach "/Volumes/$VOLUME_NAME"
         hdiutil convert temp.dmg -format UDZO -o "dist/$DMG_NAME.dmg"
         rm temp.dmg setup_dmg.applescript
-        
-        echo "✅ DMG created: $DMG_NAME.dmg"
+
+        echo "✅ DMG created: dist/$DMG_NAME.dmg"
         ls -lh dist/*.dmg
-    
-    - name: ⬆️ Upload DMG Installer
+
+    - name: ⬆ Upload DMG Installer
       uses: actions/upload-artifact@v4
       with:
         name: MagmaFlow-macOS-Installer
         path: dist/*.dmg
         retention-days: 90
-    
-    - name: ⬆️ Upload App Bundle  
+
+    - name: ⬆ Upload App Bundle
       uses: actions/upload-artifact@v4
       with:
         name: MagmaFlow-macOS-App
         path: dist/*.app/**
         retention-days: 30
+
