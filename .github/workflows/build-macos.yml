@@ -3,7 +3,7 @@ name: 🍎 Build macOS DMG Installer
 on:
   push:
     branches: [ main, master ]
-  workflow_dispatch:  # Allows manual trigger
+  workflow_dispatch:
 
 jobs:
   build-mac:
@@ -27,7 +27,6 @@ jobs:
         unzip -q openjfx-21.0.1_osx-x64_bin-sdk.zip
         mv javafx-sdk-21.0.1 javafx-sdk
         echo "JAVAFX_PATH=$(pwd)/javafx-sdk/lib" >> $GITHUB_ENV
-        ls -la javafx-sdk/lib/  # Debug: show what's downloaded
     
     - name: 🔍 Verify Source Files
       run: |
@@ -40,7 +39,6 @@ jobs:
         echo "🔨 Compiling MagmaFlow application..."
         mkdir -p build/classes
         
-        # Find all Java files recursively
         find src/main/java -name "*.java" > sources.txt
         
         if [ -s sources.txt ]; then
@@ -59,22 +57,14 @@ jobs:
         echo "📦 Creating executable JAR..."
         mkdir -p dist
         
-        # Verify compiled classes exist
         if [ ! -d "build/classes" ] || [ -z "$(ls -A build/classes)" ]; then
           echo "❌ No compiled classes found!"
           exit 1
         fi
         
-        # Create JAR with proper manifest
-        cat > build/MANIFEST.MF << EOF
-        Manifest-Version: 1.0
-        Main-Class: com.carlosbuss.MagmaFlow
-        Class-Path: .
-        EOF
-        
         jar --create \
             --file dist/MagmaFlow.jar \
-            --manifest build/MANIFEST.MF \
+            --main-class com.carlosbuss.MagmaFlow \
             -C build/classes .
         
         echo "✅ JAR created: $(ls -lh dist/MagmaFlow.jar)"
@@ -83,7 +73,6 @@ jobs:
       run: |
         echo "🏗️ Creating macOS application bundle..."
         
-        # Verify JAR exists and is not empty
         if [ ! -f "dist/MagmaFlow.jar" ] || [ ! -s "dist/MagmaFlow.jar" ]; then
           echo "❌ JAR file missing or empty!"
           exit 1
@@ -102,47 +91,38 @@ jobs:
           --vendor "Carlos Buss" \
           --copyright "Copyright © 2024 Carlos Buss" \
           --mac-package-identifier "com.carlosbuss.magmaflow" \
-          --java-options "-Xmx2048m" \
-          --verbose
+          --java-options "-Xmx2048m"
         
-        # Verify app bundle was created
         if [ -d "dist/MagmaFlow.app" ]; then
           echo "✅ App bundle created successfully"
-          ls -la dist/MagmaFlow.app/
         else
           echo "❌ App bundle creation failed!"
           exit 1
         fi
     
-    - name: 📀 Create Professional DMG Installer
+    - name: 📀 Create DMG Installer
       run: |
-        echo "📀 Creating professional DMG installer..."
+        echo "📀 Creating DMG installer..."
         
         APP_NAME="MagmaFlow"
         DMG_NAME="MagmaFlow-1.0.0-macOS"
         VOLUME_NAME="MagmaFlow Installer"
         
-        # Verify app bundle exists
         if [ ! -d "dist/$APP_NAME.app" ]; then
           echo "❌ App bundle not found!"
           exit 1
         fi
         
-        # Create temporary directory for DMG contents
         mkdir -p dmg_contents
         cp -R "dist/$APP_NAME.app" dmg_contents/
-        
-        # Create Applications symlink
         ln -s /Applications dmg_contents/Applications
         
-        # Add installation instructions
         cat > dmg_contents/README.txt << 'EOF'
 Welcome to MagmaFlow!
 
 To install MagmaFlow:
 1. Drag the MagmaFlow app to the Applications folder
 2. Launch MagmaFlow from your Applications folder
-3. Enjoy!
 
 If you see a security warning:
 - Right-click the app → Open → Open anyway
@@ -151,7 +131,6 @@ If you see a security warning:
 Built with ❤️ by Carlos Buss
 EOF
         
-        # Create DMG using a simpler approach
         hdiutil create -volname "$VOLUME_NAME" \
                       -srcfolder dmg_contents \
                       -ov \
@@ -159,22 +138,10 @@ EOF
                       -fs HFS+ \
                       "dist/$DMG_NAME.dmg"
         
-        # Clean up
         rm -rf dmg_contents
         
         echo "✅ DMG created: $DMG_NAME.dmg"
         ls -lh dist/*.dmg
-    
-    - name: 🧪 Test DMG Integrity
-      run: |
-        echo "🧪 Testing DMG integrity..."
-        if [ -f "dist/MagmaFlow-1.0.0-macOS.dmg" ]; then
-          hdiutil verify "dist/MagmaFlow-1.0.0-macOS.dmg"
-          echo "✅ DMG integrity check passed"
-        else
-          echo "❌ DMG file not found!"
-          exit 1
-        fi
     
     - name: ⬆️ Upload DMG Installer
       uses: actions/upload-artifact@v4
@@ -184,7 +151,7 @@ EOF
         retention-days: 90
       if: success()
     
-    - name: ⬆️ Upload App Bundle  
+    - name: ⬆️ Upload App Bundle
       uses: actions/upload-artifact@v4
       with:
         name: MagmaFlow-macOS-App
@@ -206,5 +173,3 @@ EOF
         java --version
         echo "JavaFX path:"
         echo $JAVAFX_PATH
-        echo "Environment variables:"
-        env | grep -E "(JAVA|PATH)" | head -10
