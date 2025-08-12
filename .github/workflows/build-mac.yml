@@ -1,143 +1,51 @@
-name: ?? Build macOS DMG Installer
+# Add this to your existing workflow after the DMG creation step
 
-on:
-  workflow_dispatch:
-  push:
-    branches: [ main, master ]
+- name: Import Code Signing Certificate
+  if: ${{ secrets.MACOS_CERTIFICATE != '' }}
+  run: |
+    # Create temporary keychain
+    security create-keychain -p "${{ secrets.KEYCHAIN_PASSWORD }}" build.keychain
+    security default-keychain -s build.keychain
+    security unlock-keychain -p "${{ secrets.KEYCHAIN_PASSWORD }}" build.keychain
+    
+    # Import certificate
+    echo "${{ secrets.MACOS_CERTIFICATE }}" | base64 --decode > certificate.p12
+    security import certificate.p12 -k build.keychain -P "${{ secrets.CERTIFICATE_PASSWORD }}" -T /usr/bin/codesign
+    security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ secrets.KEYCHAIN_PASSWORD }}" build.keychain
 
-concurrency:
-  group: installer-build
-  cancel-in-progress: true
+- name: Sign Application
+  if: ${{ secrets.MACOS_CERTIFICATE != '' }}
+  run: |
+    # Sign the app bundle
+    codesign --force --options runtime --deep --sign "${{ secrets.SIGNING_IDENTITY }}" dist/MagmaFlow.app
+    
+    # Verify signing
+    codesign --verify --verbose dist/MagmaFlow.app
 
-jobs:
-  build-mac:
-    runs-on: macos-latest
-    steps:
+- name: Create Signed DMG
+  if: ${{ secrets.MACOS_CERTIFICATE != '' }}
+  run: |
+    # Recreate DMG with signed app
+    rm -f dist/MagmaFlow-1.0.0-macOS.dmg
+    hdiutil create -volname "MagmaFlow" -srcfolder dist/MagmaFlow.app -ov -format UDZO dist/MagmaFlow-1.0.0-macOS-signed.dmg
+    
+    # Sign the DMG
+    codesign --force --sign "${{ secrets.SIGNING_IDENTITY }}" dist/MagmaFlow-1.0.0-macOS-signed.dmg
 
-    - name: ?? Checkout Repository
-      uses: actions/checkout@v4
-
-    - name: ? Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        distribution: temurin
-        java-version: 17
-
-    - name: ?? Download JavaFX 17 SDK
-      run: |
-        wget -q https://download2.gluonhq.com/openjfx/17.0.10/openjfx-17.0.10_osx-x64_bin-sdk.zip
-        unzip -q openjfx-17.0.10_osx-x64_bin-sdk.zip
-        mv javafx-sdk-17.0.10 javafx-sdk
-        echo "JAVAFX_PATH=$(pwd)/javafx-sdk/lib" >> $GITHUB_ENV
-
-    - name: ?? Prepare App Icon (.icns)
-      run: |
-        mkdir -p icons
-        cp MagmaFlow_logo.PNG icons/magmaflow.png
-        mkdir -p icons/magmaflow.iconset
-        cp icons/magmaflow.png icons/magmaflow.iconset/icon_512x512.png
-        iconutil -c icns icons/magmaflow.iconset -o icons/MagmaFlow.icns
-        echo "ICON_PATH=$(pwd)/icons/MagmaFlow.icns" >> $GITHUB_ENV
-
-    - name: ?? Compile All Sources
-      run: |
-        mkdir -p build/classes
-        javac --module-path $JAVAFX_PATH \
-              --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.swing \
-              -d build/classes \
-              $(find src/main/java -name "*.java")
-
-    - name: ?? Create JAR File
-      run: |
-        mkdir -p dist
-        jar --create \
-            --file dist/MagmaFlow.jar \
-            --main-class com.carlosbuss.Magmaflow \
-            -C build/classes .
-
-    - name: ??? Create macOS App Bundle
-      run: |
-        jpackage \
-          --type app-image \
-          --name "MagmaFlow" \
-          --app-version "1.0.0" \
-          --input dist \
-          --main-jar MagmaFlow.jar \
-          --main-class com.carlosbuss.Magmaflow \
-          --icon "$ICON_PATH" \
-          --module-path $JAVAFX_PATH \
-          --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.swing \
-          --dest dist \
-          --vendor "Carlos Buss" \
-          --copyright "Copyright © 2025 Carlos Buss" \
-          --mac-package-identifier "com.carlosbuss.magmaflow" \
-          --java-options "-Xmx2048m"
-
-    - name: ?? Create Professional DMG Installer
-      run: |
-        APP_NAME="MagmaFlow"
-        DMG_NAME="MagmaFlow-1.0.0-macOS"
-        VOLUME_NAME="MagmaFlow Installer"
-        APP_SIZE=$(du -sm "dist/$APP_NAME.app" | cut -f1)
-        DMG_SIZE=$((APP_SIZE + 20))m
-
-        hdiutil create -size $DMG_SIZE -fs HFS+ -volname "$VOLUME_NAME" temp.dmg
-        hdiutil attach temp.dmg -mountpoint "/Volumes/$VOLUME_NAME"
-
-        cp -R "dist/$APP_NAME.app" "/Volumes/$VOLUME_NAME/"
-        ln -s /Applications "/Volumes/$VOLUME_NAME/Applications"
-
-        cat > "/Volumes/$VOLUME_NAME/How to Install.txt" << 'EOF'
-        Welcome to MagmaFlow!
-
-        To install MagmaFlow:
-        1. Drag the MagmaFlow app to the Applications folder
-        2. Launch MagmaFlow from your Applications folder
-
-        ? First-time open on macOS will show "unidentified developer" warning:
-        - Right-click the app ? Open ? Open anyway
-        - Or System Settings ? Privacy & Security ? Allow
-
-        Built with ?? by Carlos Buss
-        EOF
-
-        # Finder layout (optional, skip error in CI)
-        cat > setup_dmg.applescript << 'EOF'
-        tell application "Finder"
-          tell disk "MagmaFlow Installer"
-            open
-            set current view of container window to icon view
-            set toolbar visible of container window to false
-            set bounds of container window to {100, 100, 800, 500}
-            set viewOptions to the icon view options of container window
-            set arrangement of viewOptions to not arranged
-            set icon size of viewOptions to 128
-            set position of item "MagmaFlow.app" to {200, 200}
-            set position of item "Applications" to {500, 200}
-            set position of item "How to Install.txt" to {350, 320}
-            close
-            open
-            update without registering applications
-            delay 3
-          end tell
-        end tell
-        EOF
-        osascript setup_dmg.applescript || echo "? Skip Finder layout on CI"
-
-        hdiutil detach "/Volumes/$VOLUME_NAME"
-        hdiutil convert temp.dmg -format UDZO -o "dist/$DMG_NAME.dmg"
-        rm temp.dmg setup_dmg.applescript
-
-    - name: ? Upload DMG Installer
-      uses: actions/upload-artifact@v4
-      with:
-        name: MagmaFlow-macOS-Installer
-        path: dist/*.dmg
-        retention-days: 30
-
-    - name: ? Upload App Bundle
-      uses: actions/upload-artifact@v4
-      with:
-        name: MagmaFlow-macOS-App
-        path: dist/*.app/**
-        retention-days: 30
+# Alternative: Create entitlements file for hardened runtime
+- name: Create Entitlements
+  run: |
+    cat > entitlements.plist << EOF
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>com.apple.security.cs.allow-jit</key>
+        <true/>
+        <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+        <true/>
+        <key>com.apple.security.cs.allow-dyld-environment-variables</key>
+        <true/>
+    </dict>
+    </plist>
+    EOF
