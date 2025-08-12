@@ -42,7 +42,7 @@ jobs:
         find src/main/java -name "*.java" > sources.txt
         
         if [ -s sources.txt ]; then
-          javac --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml,javafx.web -d build/classes @sources.txt
+          javac --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.swing -d build/classes @sources.txt
           echo "Compilation successful"
         else
           echo "No Java source files found!"
@@ -71,7 +71,7 @@ jobs:
           exit 1
         fi
         
-        jpackage --type app-image --name "MagmaFlow" --app-version "1.0.0" --input dist/ --main-jar MagmaFlow.jar --main-class com.carlosbuss.MagmaFlow --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml,javafx.web --dest dist/ --vendor "Carlos Buss" --copyright "Copyright 2024 Carlos Buss" --mac-package-identifier "com.carlosbuss.magmaflow" --java-options "-Xmx2048m"
+        jpackage --type app-image --name "MagmaFlow" --app-version "1.0.0" --input dist/ --main-jar MagmaFlow.jar --main-class com.carlosbuss.MagmaFlow --module-path $JAVAFX_PATH --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.swing --dest dist/ --vendor "Carlos Buss" --copyright "Copyright 2024 Carlos Buss" --mac-package-identifier "com.carlosbuss.magmaflow" --java-options "-Xmx2048m"
         
         if [ -d "dist/MagmaFlow.app" ]; then
           echo "App bundle created successfully"
