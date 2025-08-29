@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.carlosbuss</groupId>
+  <artifactId>magmaflow</artifactId>
+  <version>1.0.0</version>
+  <packaging>jar</packaging>
+
+  <name>MagmaFlow</name>
+  <description>Publication-Ready Volcano Plots - Drag, Explore, Discover</description>
+
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Mojave-friendly JavaFX LTS + Intel classifier -->
+    <javafx.version>17.0.12</javafx.version>
+    <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+
+    <main.class>com.carlosbuss.Magmaflow</main.class>
+
+    <!-- Mojave is Intel (x64), not Apple Silicon -->
+    <javafx.platform>mac</javafx.platform>
+    <installer.type>DMG</installer.type>
+    <app.icon>src/main/resources/MF_logo.icns</app.icon>
+  </properties>
+
+  <!-- ============== Dependencies (JavaFX macOS/Intel) ============== -->
+  <dependencies>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-base</artifactId>
+      <version>${javafx.version}</version>
+      <classifier>${javafx.platform}</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-graphics</artifactId>
+      <version>${javafx.version}</version>
+      <classifier>${javafx.platform}</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-controls</artifactId>
+      <version>${javafx.version}</version>
+      <classifier>${javafx.platform}</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-swing</artifactId>
+      <version>${javafx.version}</version>
+      <classifier>${javafx.platform}</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-fxml</artifactId>
+      <version>${javafx.version}</version>
+      <classifier>${javafx.platform}</classifier>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>MagmaFlow-${project.version}</finalName>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+    </resources>
+
+    <plugins>
+      <!-- Java 17 compiler -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <release>${maven.compiler.release}</release>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+
+      <!-- Copy JavaFX natives for the current platform to target/lib -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.6.0</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>prepare-package</phase>
+            <goals><goal>copy-dependencies</goal></goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/lib</outputDirectory>
+              <includeGroupIds>org.openjfx</includeGroupIds>
+              <includeClassifiers>${javafx.platform}</includeClassifiers>
+              <excludeTransitive>false</excludeTransitive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Create JAR with manifest classpath pointing to lib/ -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
+              <mainClass>${main.class}</mainClass>
+            </manifest>
+            <manifestEntries>
+              <Class-Path>lib/</Class-Path>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+
+      <!-- (Optional) javafx:run helper -->
+      <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>${javafx.maven.plugin.version}</version>
+        <configuration>
+          <mainClass>${main.class}</mainClass>
+          <jvmArgs>
+            <jvmArg>-Xms1g</jvmArg>
+            <jvmArg>-Xmx6g</jvmArg>
+            <jvmArg>-XX:+UseG1GC</jvmArg>
+            <jvmArg>-XX:MaxGCPauseMillis=100</jvmArg>
+            <jvmArg>-Dprism.targetvram=2048</jvmArg>
+            <jvmArg>-Djavafx.animation.pulse=60</jvmArg>
+          </jvmArgs>
+        </configuration>
+      </plugin>
+
+      <!-- jpackage DMG for macOS -->
+      <plugin>
+        <groupId>org.panteleyev</groupId>
+        <artifactId>jpackage-maven-plugin</artifactId>
+        <version>1.6.0</version>
+        <configuration>
+          <name>MagmaFlow</name>
+          <appVersion>${project.version}</appVersion>
+          <vendor>Carlos Buss</vendor>
+          <description>Publication-Ready Volcano Plots - Drag, Explore, Discover</description>
+
+          <input>${project.build.directory}</input>
+          <destination>${project.build.directory}/installer</destination>
+
+          <mainClass>${main.class}</mainClass>
+          <mainJar>${project.build.finalName}.jar</mainJar>
+          <icon>${app.icon}</icon>
+
+          <type>${installer.type}</type> <!-- DMG -->
+
+          <javaOptions>
+            <option>-Dfile.encoding=UTF-8</option>
+            <option>-Xms1g</option>
+            <option>-Xmx6g</option>
+            <option>-XX:+UseG1GC</option>
+            <option>-XX:MaxGCPauseMillis=100</option>
+            <option>-Dprism.targetvram=2048</option>
+            <option>-Djavafx.animation.pulse=60</option>
+            <option>--module-path</option>
+            <option>$APPDIR/lib</option>
+            <option>--add-modules</option>
+            <option>javafx.base,javafx.graphics,javafx.controls,javafx.swing,javafx.fxml</option>
+          </javaOptions>
+
+          <!-- Build with an Intel (x64) JDK 17 -->
+          <runtimeImage>${java.home}</runtimeImage>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- Auto-activate on macOS (Intel) -->
+  <profiles>
+    <profile>
+      <id>macos</id>
+      <activation>
+        <os><family>mac</family></os>
+      </activation>
+      <properties>
+        <javafx.platform>mac</javafx.platform>
+        <installer.type>DMG</installer.type>
+        <app.icon>src/main/resources/MF_logo.icns</app.icon>
+      </properties>
+    </profile>
+  </profiles>
+</project>
+
