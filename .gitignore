@@ -1,33 +1,86 @@
+# ---------------------------
+# OS junk
+# ---------------------------
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# ---------------------------
+# IDE/editor
+# ---------------------------
 .idea/
+*.iml
+*.iws
+out/
 .vscode/
+.history/
+.project
+.classpath
+.settings/
+.loadpath
+
+# ---------------------------
+# Java / Maven
+# ---------------------------
 target/
-build/
-dist/
-installer/
-**/*.dmg
-**/*.pkg
-**/*.zip
-**/*.msi
-**/*.exe
-javafx-sdk-*/
-jdk*/
-jre*/
+dependency-reduced-pom.xml
 *.class
 *.log
 *.hprof
 hs_err_pid*
 replay_pid*
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.bmp
-*.csv
-*.tsv
-*.json
-*.xlsx
-*.xls
+
+# ---------------------------
+# Build outputs / installers
+# ---------------------------
+build/
+dist/
+installer/
+release/
+**/*.dmg
+**/*.pkg
+**/*.msi
+**/*.exe
+**/*.zip
+**/*.tar
+**/*.tar.gz
+
+# ---------------------------
+# Bundled SDKs
+# ---------------------------
+javafx-sdk-*/
+jdk*/
+jre*/
+
+# ---------------------------
+# Exported images at repo root
+# (screenshots, exports, etc.)
+# ---------------------------
+/*.png
+/*.jpg
+/*.jpeg
+/*.gif
+/*.bmp
+
+# ---------------------------
+# Always keep application resources
+# ---------------------------
+!src/**
+
+# ---------------------------
+# Data files & local projects at root
+# ---------------------------
+/*.csv
+/*.tsv
+/*.json
+/*.xlsx
+/*.xls
+
+# ---------------------------
+# Temporary scratch files
+# ---------------------------
 tmp/
 temp/
 *.tmp
