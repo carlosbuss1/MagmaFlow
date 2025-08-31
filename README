@@ -1,0 +1,96 @@
+# 📊 MagmaFlow: Interactive Volcano Plot Application
+
+MagmaFlow is a **JavaFX-based scientific visualization tool** for creating **publication-ready volcano plots**.
+It enables researchers to **explore, annotate, and export** differential expression results interactively, ensuring high-quality figures for papers, presentations, and data exploration.
+
+---
+
+## 🚀 Features
+
+- Interactive volcano plot exploration
+- Drag-and-drop gene annotation with labels
+- Customizable thresholds (log2FC, p-value, adjusted p-value)
+- Export-ready plots (PNG, SVG, PDF)
+- Persistent project save/load (JSON format)
+- Publication-quality styling with white backgrounds and clean legends
+- Cross-platform (Windows, macOS, Linux)
+
+---
+
+## 🛠 Installation
+
+### 🔹 Download
+
+The latest release is available here:
+👉 [MagmaFlow Releases on GitHub](https://github.com/carlosbuss1/MagmaFlow/releases/tag/magmaflow)
+
+### 🔹 Windows / Linux
+
+- Download the `.jar` file.
+- Run with:
+
+```bash
+java -jar MagmaFlow-x.y.z.jar
+
+🔹 **macOS**
+
+1.  Download the `.dmg` installer from the [Release page](https://github.com/yourusername/MagmaFlow/releases).
+2.  Open the downloaded `.dmg` file and drag the **MagmaFlow** icon into your **Applications** folder.
+3.  Try launching the app. If macOS blocks it:
+    *   Go to **System Settings** → **Privacy & Security** → **Security**
+    *   Scroll down to **"Allow accessories to connect"**
+    *   Click **"Allow"** to approve MagmaFlow
+    *   Then re-open the app
+    > *This step is needed because macOS sometimes restricts apps from unidentified developers.*
+
+---
+
+📂 **Usage**
+
+*   No pre-manipulation of data is required. You can use the direct output from your DEA (RNA-seq, proteomics, or phosphoproteomics).
+*   Import your results (CSV/TSV).
+*   The app automatically recognizes the required columns:
+    *   `Gene`
+    *   `log2FC`
+    *   `p-value`
+    *   `adj-pvalue` (optional but recommended)
+*   Adjust thresholds for log2 fold-change and p-value.
+*   Explore interactively: click on points to annotate genes.
+*   Export figures for your manuscript.
+
+**Example input format:**
+
+| Gene    | log2FC | p-value | adj-pvalue |
+| :------ | :----: | :-----: | :--------: |
+| PTPRF   |  1.2   |  0.004  |   0.007    |
+| PTPN12  |  -0.8  |  0.012  |   0.025    |
+
+---
+
+📖 **Citation**
+
+If you use MagmaFlow in your research, please cite:
+
+> Carlos Eduardo Buss. MagmaFlow: Interactive Volcano Plot Application. Signal Transduction and Metabolism Laboratory (STML), Free University of Brussels (ULB). DOI: [10.5281/zenodo.xxxxxxx](https://doi.org/10.5281/zenodo.xxxxxxx)
+
+A `CITATION.cff` file is included for GitHub’s citation support.
+
+---
+
+📜 **License**
+
+MagmaFlow is distributed under the GNU General Public License v3 (GPL-3.0) with additional terms:
+
+*   Utilization of this software (in whole or in part) for scientific or academic purposes must be accompanied by an appropriate citation of the original authors and DOI.
+*   Commercial use of this software, or any derivative work, is not permitted without prior written consent from the copyright holder.
+
+See the full [LICENSE](https://github.com/yourusername/MagmaFlow/blob/main/LICENSE) file for details.
+
+---
+
+👨‍💻 **Author**
+
+**Carlos Eduardo Buss**  
+Senior Bioinformatician, Signal Transduction and Metabolism Laboratory (STML),  
+Free University of Brussels (ULB)  
+📧 [carlos.eduardo.buss@ulb.be](mailto:carlos.eduardo.buss@ulb.be)
