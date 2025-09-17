@@ -11,12 +11,12 @@ MagmaFlow is a powerful, user-friendly JavaFX application designed for creating 
 
 ### Advanced Color Schemes
 - **Gurzov Classic Style**: Traditional blue/red coloring for down/up-regulated genes
-- **MagmaFlow Classic Styles**: Customizable gradient palettes with direct color refinement
-  - Classic 1: P-value based gradients
-  - Classic 2: Log2 fold change based gradients
-  - Classic 3: Combined p-value and fold change gradients
-- **MagmaFlow Viridis & Magma Styles**: Professional scientific color palettes
-- **Custom Color Pickers**: Direct access to RGB/Hex color refinement without palette selection
+- **MagmaFlow Classic Styles**: Customizable gradient palettes with direct color refinement  
+  - Classic 1: P-value based gradients  
+  - Classic 2: Log2 fold change based gradients  
+  - Classic 3: Combined p-value and fold change gradients  
+- **MagmaFlow Viridis & Magma Styles**: Professional scientific color palettes  
+- **Custom Color Pickers**: Direct access to RGB/Hex color refinement without palette selection  
 
 ## Installation & Usage
 
