@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_header.png" alt="MagmaFlow Header" width="800"/>
+  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/MagmaFlow_header.png" alt="MagmaFlow Header" width="800"/>
 </p>
 
 # MagmaFlow
@@ -7,7 +7,7 @@
 **An Interactive Volcano Plot Application for Differential Gene Expression Analysis**
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_Panel_git.png" alt="MagmaFlow Interface" width="600"/>
+  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/MagmaFlow_Panel_git.png" alt="MagmaFlow Interface" width="600"/>
 </p>
 
 ## Overview
@@ -35,4 +35,3 @@ cd MagmaFlow
 
 # Compile and run
 mvn clean javafx:run
-
