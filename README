@@ -9,10 +9,6 @@ An Interactive Volcano Plot Application for Differential Gene Expression Analysi
 MagmaFlow is a powerful, user-friendly JavaFX application designed for creating interactive volcano plots from differential gene expression data.  
 It provides researchers with an intuitive interface to visualize statistical significance versus fold change patterns in genomic datasets.
 
-![MagmaFlow Header](https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_header.png)
-
-![MagmaFlow Interface](https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_Panel_git.png)
-
 ---
 
 ## Key Features
