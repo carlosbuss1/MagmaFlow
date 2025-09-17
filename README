@@ -1,96 +1,58 @@
-# 📊 MagmaFlow: Interactive Volcano Plot Application
+# MagmaFlow
 
-MagmaFlow is a **JavaFX-based scientific visualization tool** for creating **publication-ready volcano plots**.
-It enables researchers to **explore, annotate, and export** differential expression results interactively, ensuring high-quality figures for papers, presentations, and data exploration.
+**An Interactive Volcano Plot Application for Differential Gene Expression Analysis**
 
----
+![MagmaFlow Interface](MagmaFlow_Panel%20(6).png)
 
-## 🚀 Features
+## Overview
 
-- Interactive volcano plot exploration
-- Drag-and-drop gene annotation with labels
-- Customizable thresholds (log2FC, p-value, adjusted p-value)
-- Export-ready plots (PNG, SVG, PDF)
-- Persistent project save/load (JSON format)
-- Publication-quality styling with white backgrounds and clean legends
-- Cross-platform (Windows, macOS, Linux)
+MagmaFlow is a powerful, user-friendly JavaFX application designed for creating interactive volcano plots from differential gene expression data. It provides researchers with an intuitive interface to visualize statistical significance versus fold change patterns in genomic datasets.
 
----
+## Key Features
 
-## 🛠 Installation
+### Advanced Color Schemes
+- **Gurzov Classic Style**: Traditional blue/red coloring for down/up-regulated genes
+- **MagmaFlow Classic Styles**: Customizable gradient palettes with direct color refinement
+  - Classic 1: P-value based gradients
+  - Classic 2: Log2 fold change based gradients  
+  - Classic 3: Combined p-value and fold change gradients
+- **MagmaFlow Viridis & Magma Styles**: Professional scientific color palettes
+- **Custom Color Pickers**: Direct access to RGB/Hex color refinement without palette selection
 
-### 🔹 Download
+### Interactive Visualization
+- **Double-click Gene Selection**: Add or remove target genes by double-clicking data points
+- **Drag & Drop Labels**: Reposition gene annotations by dragging
+- **Flexible Edge Connections**: Choose how annotation lines connect to labels (left, right, center, smart, auto)
+- **Zoom & Pan Controls**: SHIFT+drag panning, mouse wheel zooming, fit-to-viewport
+- **Hover Information**: Real-time gene details on mouse hover
 
-The latest release is available here:
-👉 [MagmaFlow Releases on GitHub](https://github.com/carlosbuss1/MagmaFlow/releases/tag/magmaflow)
+### Target Gene Management
+- Load target gene lists from files
+- Manual gene entry via text input
+- Checkbox-based gene visibility control
+- Smart annotation positioning to prevent overlap
+- Configurable edge connection styles for cleaner plots
 
-### 🔹 Windows / Linux
+### Comprehensive Customization
+- **Independent Font Controls**: Separate font sizes for title, axis labels, tick labels, and gene annotations
+- **Flexible Thresholds**: Adjustable p-value and log2 fold change cutoffs
+- **Tick Spacing**: Manual or automatic axis tick intervals
+- **Dot Styling**: Opacity control, outline options, size adjustment
+- **Export Options**: High-resolution PNG and PDF export with DPI control
 
-- Download the `.jar` file.
-- Run with:
+### Project Management
+- **Save/Load Projects**: Preserve all settings, annotations, and customizations
+- **Auto-save Indicators**: Track unsaved changes with visual feedback
+- **CSV Import**: Flexible column mapping for various data formats
 
+## Installation & Usage
+
+### Prerequisites
+- Java 17 or higher
+- JavaFX runtime (included in most distributions)
+
+### Quick Start
+1. Clone the repository:
 ```bash
-java -jar MagmaFlow-x.y.z.jar
-
-🔹 **macOS**
-
-1.  Download the `.dmg` installer from the [Release page](https://github.com/yourusername/MagmaFlow/releases).
-2.  Open the downloaded `.dmg` file and drag the **MagmaFlow** icon into your **Applications** folder.
-3.  Try launching the app. If macOS blocks it:
-    *   Go to **System Settings** → **Privacy & Security** → **Security**
-    *   Scroll down to **"Allow accessories to connect"**
-    *   Click **"Allow"** to approve MagmaFlow
-    *   Then re-open the app
-    > *This step is needed because macOS sometimes restricts apps from unidentified developers.*
-
----
-
-📂 **Usage**
-
-*   No pre-manipulation of data is required. You can use the direct output from your DEA (RNA-seq, proteomics, or phosphoproteomics).
-*   Import your results (CSV/TSV).
-*   The app automatically recognizes the required columns:
-    *   `Gene`
-    *   `log2FC`
-    *   `p-value`
-    *   `adj-pvalue` (optional but recommended)
-*   Adjust thresholds for log2 fold-change and p-value.
-*   Explore interactively: click on points to annotate genes.
-*   Export figures for your manuscript.
-
-**Example input format:**
-
-| Gene    | log2FC | p-value | adj-pvalue |
-| :------ | :----: | :-----: | :--------: |
-| PTPRF   |  1.2   |  0.004  |   0.007    |
-| PTPN12  |  -0.8  |  0.012  |   0.025    |
-
----
-
-📖 **Citation**
-
-If you use MagmaFlow in your research, please cite:
-
-> Carlos Eduardo Buss. MagmaFlow: Interactive Volcano Plot Application. Signal Transduction and Metabolism Laboratory (STML), Free University of Brussels (ULB). DOI: [10.5281/zenodo.xxxxxxx](https://doi.org/10.5281/zenodo.xxxxxxx)
-
-A `CITATION.cff` file is included for GitHub’s citation support.
-
----
-
-📜 **License**
-
-MagmaFlow is distributed under the GNU General Public License v3 (GPL-3.0) with additional terms:
-
-*   Utilization of this software (in whole or in part) for scientific or academic purposes must be accompanied by an appropriate citation of the original authors and DOI.
-*   Commercial use of this software, or any derivative work, is not permitted without prior written consent from the copyright holder.
-
-See the full [LICENSE](https://github.com/yourusername/MagmaFlow/blob/main/LICENSE) file for details.
-
----
-
-👨‍💻 **Author**
-
-**Carlos Eduardo Buss**  
-Senior Bioinformatician, Signal Transduction and Metabolism Laboratory (STML),  
-Free University of Brussels (ULB)  
-📧 [carlos.eduardo.buss@ulb.be](mailto:carlos.eduardo.buss@ulb.be)
+   git clone https://github.com/carlosbuss1/MagmaFlow.git
+   cd MagmaFlow
