@@ -18,7 +18,21 @@ MagmaFlow is a powerful, user-friendly JavaFX application designed for creating 
   <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/MagmaFlow_Panel_git.png" alt="MagmaFlow Interface" width="1000"/>
 </p>
 
-## Key Killer Features
+## Key Features
+
+### Interactive Superpowers
+- **Double-Click Gene Selection**: Instantly add/remove target genes by double-clicking data points
+- **Drag & Drop Labels**: Reposition gene annotations by dragging them anywhere
+- **Smart Edge Connections**: Choose how annotation lines connect (left, right, center, smart, auto)
+- **Advanced Zoom & Pan**: SHIFT+drag panning, mouse wheel zooming, one-click fit-to-viewport
+- **Real-time Hover Info**: Live gene details with double-click hints on mouse hover
+
+### Smart Target Gene Management
+- **File Import**: Load target gene lists from text files
+- **Manual Entry**: Type or paste gene names with smart parsing
+- **Checkbox Control**: Individual gene visibility toggles
+- **Smart Positioning**: Auto-prevent label overlaps with intelligent spacing
+- **Flexible Connections**: Configurable edge styles for clean, professional plots
 
 ### Revolutionary Color Systems
 - **Gurzov Classic Style**: Traditional blue/red coloring for down/up-regulated genes
@@ -28,20 +42,6 @@ MagmaFlow is a powerful, user-friendly JavaFX application designed for creating 
   - **Classic 3**: Combined p-value and fold change gradients
 - **MagmaFlow Viridis & Magma Styles**: Professional scientific color palettes
 - **Custom Color Pickers**: **Skip palette selection** - go directly to RGB/Hex refinement
-
-### Interactive Superpowers
-- **Double-Click Gene Selection**: Instantly add/remove target genes by double-clicking data points
-- **Drag & Drop Labels**: Reposition gene annotations by dragging them anywhere
-- **Smart Edge Connections**: Choose how annotation lines connect (left, right, center, smart, auto)
-- **Advanced Zoom & Pan**: SHIFT+drag panning, mouse wheel zooming, one-click fit-to-viewport
-- **Real-time Hover Info**: Live gene details with double-click hints on mouse hover
-
-### Target Gene Management Revolution
-- **File Import**: Load target gene lists from text files
-- **Manual Entry**: Type or paste gene names with smart parsing
-- **Checkbox Control**: Individual gene visibility toggles
-- **Smart Positioning**: Auto-prevent label overlaps with intelligent spacing
-- **Flexible Connections**: Configurable edge styles for clean, professional plots
 
 ### Precision Customization Engine
 - **Independent Font Controls**: Separate sizes for title, axes, ticks, and annotations
@@ -73,3 +73,4 @@ cd MagmaFlow
 
 # Build and launch in one command
 mvn clean javafx:run
+
