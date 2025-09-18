@@ -14,10 +14,6 @@
 
 MagmaFlow is a powerful, user-friendly JavaFX application designed for creating interactive volcano plots from differential gene expression data. It provides researchers with an intuitive interface to visualize statistical significance versus fold change patterns in genomic datasets with publication-ready quality.
 
-<p align="center">
-  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/MagmaFlow_Panel_git.png" alt="MagmaFlow Interface" width="1000"/>
-</p>
-
 ## Key Features
 
 ### Interactive Superpowers
@@ -56,6 +52,19 @@ MagmaFlow is a powerful, user-friendly JavaFX application designed for creating 
 - **Smart CSV Import**: Intelligent column mapping with auto-detection
 - **Session Persistence**: Remember your work across application restarts
 
+<p align="center">
+  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/MagmaFlow_Panel_git.png" alt="MagmaFlow Interface" width="1000"/>
+</p>
+
+## Downloads
+
+### Ready-to-Use Applications
+- **[MagmaFlow v10.0.3 for macOS (DMG)](https://zenodo.org/records/17064020/files/MagmaFlow_v10.0.3.dmg)** - Interactive Volcano Plot Application
+- **[Source Code (ZIP)](https://github.com/carlosbuss1/MagmaFlow/archive/refs/heads/main.zip)** - Latest development version
+
+### All Releases
+Visit our [Zenodo repository](https://zenodo.org/records/17064020) for all versions and additional files.
+
 ## Installation & Quick Start
 
 ### Prerequisites
@@ -73,4 +82,5 @@ cd MagmaFlow
 
 # Build and launch in one command
 mvn clean javafx:run
+
 
