@@ -23,7 +23,7 @@ MagmaFlow is a powerful, user-friendly JavaFX application designed for creating 
 - **Advanced Zoom & Pan**: SHIFT+drag panning, mouse wheel zooming, one-click fit-to-viewport
 - **Real-time Hover Info**: Live gene details with double-click hints on mouse hover
 
-### Smart Target Gene Management
+### Target Gene Management Revolution
 - **File Import**: Load target gene lists from text files
 - **Manual Entry**: Type or paste gene names with smart parsing
 - **Checkbox Control**: Individual gene visibility toggles
@@ -53,7 +53,11 @@ MagmaFlow is a powerful, user-friendly JavaFX application designed for creating 
 - **Session Persistence**: Remember your work across application restarts
 
 <p align="center">
-  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/MagmaFlow_Panel_git.png" alt="MagmaFlow Interface" width="1000"/>
+  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/01_MagmaFlow_Panel_git.jpeg" alt="MagmaFlow Interface Overview" width="1000"/>
+</p>
+
+<p align="center">
+  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/02_MagmaFlow_Panel_git.jpeg" alt="MagmaFlow Advanced Features" width="1000"/>
 </p>
 
 ## Downloads
@@ -67,12 +71,18 @@ Visit our [Zenodo repository](https://zenodo.org/records/17064020) for all versi
 
 ## Installation & Quick Start
 
-### Prerequisites
+### Option 1: Download Pre-built Application (Recommended)
+1. Download the [DMG file for macOS](https://zenodo.org/records/17064020/files/MagmaFlow_v10.0.3.dmg)
+2. Open the DMG and drag MagmaFlow to Applications
+3. Launch MagmaFlow from Applications folder
+
+### Option 2: Build from Source
+**Prerequisites:**
 - **Java 17+** (OpenJDK recommended)
 - **Maven 3.6+** (for building)
 - **JavaFX Runtime** (included in most Java distributions)
 
-### Lightning-Fast Setup
+**Lightning-Fast Setup:**
 ```bash
 # Clone the repository
 git clone https://github.com/carlosbuss1/MagmaFlow.git
@@ -82,5 +92,3 @@ cd MagmaFlow
 
 # Build and launch in one command
 mvn clean javafx:run
-
-
