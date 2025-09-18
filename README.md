@@ -72,9 +72,8 @@ Visit our [Zenodo repository](https://zenodo.org/records/17064020) for all versi
 ## Installation & Quick Start
 
 ### Option 1: Download Pre-built Application (Recommended - Easier)
-1. Download the [DMG file for macOS](https://zenodo.org/records/17064020/files/MagmaFlow_v10.0.3.dmg)
-2. Open the DMG and drag MagmaFlow to Applications
-3. Launch MagmaFlow from Applications folder
+1. Open the DMG and drag MagmaFlow to Applications
+2. Launch MagmaFlow from Applications folder
 
 ### Option 2: Build from Source
 **Prerequisites:**
@@ -92,4 +91,5 @@ cd MagmaFlow
 
 # Build and launch in one command
 mvn clean javafx:run
+
 
