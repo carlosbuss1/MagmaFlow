@@ -63,7 +63,7 @@ MagmaFlow is a powerful, user-friendly JavaFX application designed for creating 
 ## Downloads
 
 ### Ready-to-Use Applications
-- **[MagmaFlow v10.0.3 for macOS (DMG)](https://zenodo.org/records/17064020/files/MagmaFlow_v10.0.3.dmg)** - Interactive Volcano Plot Application
+- **[MagmaFlow v10.0.3 for macOS (DMG)](https://zenodo.org/records/17107683/files/MagmaFlow-10.0.3.dmg?download=1)** - Interactive Volcano Plot Application
 - **[Source Code (ZIP)](https://github.com/carlosbuss1/MagmaFlow/archive/refs/heads/main.zip)** - Latest development version
 
 ### All Releases
@@ -71,7 +71,7 @@ Visit our [Zenodo repository](https://zenodo.org/records/17064020) for all versi
 
 ## Installation & Quick Start
 
-### Option 1: Download Pre-built Application (Recommended)
+### Option 1: Download Pre-built Application (Recommended - Easier)
 1. Download the [DMG file for macOS](https://zenodo.org/records/17064020/files/MagmaFlow_v10.0.3.dmg)
 2. Open the DMG and drag MagmaFlow to Applications
 3. Launch MagmaFlow from Applications folder
@@ -92,3 +92,4 @@ cd MagmaFlow
 
 # Build and launch in one command
 mvn clean javafx:run
+
