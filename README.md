@@ -23,7 +23,7 @@ MagmaFlow is a powerful, user-friendly JavaFX application designed for creating 
 - **Advanced Zoom & Pan**: SHIFT+drag panning, mouse wheel zooming, one-click fit-to-viewport
 - **Real-time Hover Info**: Live gene details with double-click hints on mouse hover
 
-### Target Gene Management Revolution
+### Target Gene Management
 - **File Import**: Load target gene lists from text files
 - **Manual Entry**: Type or paste gene names with smart parsing
 - **Checkbox Control**: Individual gene visibility toggles
@@ -91,5 +91,6 @@ cd MagmaFlow
 
 # Build and launch in one command
 mvn clean javafx:run
+
 
 
