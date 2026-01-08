@@ -1,25 +1,163 @@
-MagmaFlow – Academic Binary License
+================================================================================
+                    MAGMAFLOW ACADEMIC BINARY LICENSE
+              END-USER LICENSE AGREEMENT (EULA) - VERSION 3
+                          8 January 2026
+================================================================================
 
-Copyright (c) 2025 Carlos Buss
+PLEASE READ CAREFULLY. By downloading, installing, or using the MagmaFlow 
+executable (the "Software") you ("Licensee") agree to the terms of this EULA 
+with the Université libre de Bruxelles, Avenue F. Roosevelt 50, B-1050 Brussels, 
+Belgium ("ULB"), which owns all intellectual-property rights in the Software.
 
-Permission is hereby granted to download, install, and use the MagmaFlow 
-executable (DMG, MSI, JAR, or other compiled distributions) for academic 
-and research purposes only, provided that all publications or presentations 
-resulting from its use include an appropriate citation of the authors and DOI.
+================================================================================
+                            1. DEFINITIONS
+================================================================================
 
-You may:
-- Use the executable for academic and research purposes.
-- Share the unmodified executable with colleagues for non-commercial use.
+"Executable" or "Software" means the compiled distribution of MagmaFlow (DMG, 
+MSI, JAR or similar) provided by ULB.
 
-You may not:
-- Use the executable for commercial purposes without prior written permission.
-- Reverse engineer, decompile, or modify the executable.
-- Redistribute modified versions or integrate into other applications.
+"Academic Use" means use by accredited higher-education or publicly funded 
+research bodies, for teaching, research, or other not-for-profit scholarly 
+purposes, with no direct or indirect commercial advantage.
 
-Citation:
-Academic use requires citation of the following DOI:10.5281/zenodo.17107683
+"Non-Commercial" means any activity that is not primarily intended for 
+commercial gain and is not carried out for the benefit of a for-profit entity 
+(including contract research, consulting, or service provision).
 
-Disclaimer:
-This software is provided “as is,” without warranty of any kind, express 
-or implied, including but not limited to the warranties of merchantability, 
-fitness for a particular purpose, and noninfringement.
+================================================================================
+                          2. LICENSE GRANT
+================================================================================
+
+Subject to this EULA, ULB grants Licensee a non-exclusive, non-transferable, 
+royalty-free licence to download, install, and run the Software solely for 
+Academic and Non-Commercial purposes. No right to sublicense is granted.
+
+================================================================================
+                          3. REDISTRIBUTION
+================================================================================
+
+Licensee may share an unmodified copy of the Executable with colleagues within 
+Academic or publicly funded institutions provided that:
+
+    (a) this EULA accompanies every copy, and
+    (b) the Citation in Section 4 is included.
+
+Publication of the Software or this EULA on public repositories, websites, or 
+mirrors is prohibited.
+
+================================================================================
+                       4. CITATION REQUIREMENT
+================================================================================
+
+Any publication, presentation, or other public output produced with the help 
+of the Software must cite:
+
+    Buss CE, Li A, Gilglioni EH, Bansal M, Singh SP, Bakiri L, Cardozo AK, 
+    Gurzov EN. MagmaFlow: An Integrated Desktop Platform for Differential 
+    Expression Interpretation Through AI-Powered Literature Annotation and 
+    Pathway Network Analysis. FEBS Letters (2025).
+    DOI: 10.5281/zenodo.17107683
+
+================================================================================
+                           5. RESTRICTIONS
+================================================================================
+
+Licensee shall not:
+
+    (a) use the Software for any Commercial purpose without prior written 
+        consent from ULB;
+
+    (b) modify, adapt, translate, or create derivative works of the Software;
+
+    (c) reverse-engineer, decompile, or disassemble the Software except as 
+        permitted by applicable law (Directive 2009/24/EC, arts 5-6, as 
+        clarified by CJEU Top System C-13/20);
+
+    (d) offer the Software to third parties as a hosted or cloud service 
+        (SaaS) or otherwise provide remote access.
+
+================================================================================
+                            6. OWNERSHIP
+================================================================================
+
+The Software and all associated intellectual-property rights remain the 
+exclusive property of ULB. No rights are granted other than those expressly 
+stated herein.
+
+================================================================================
+                      7. THIRD-PARTY COMPONENTS
+================================================================================
+
+The Software may include third-party components governed by their own licences. 
+Those licences prevail for the respective components; no additional rights are 
+granted by ULB.
+
+================================================================================
+                           8. TERMINATION
+================================================================================
+
+This EULA terminates automatically if Licensee breaches any of its terms. Upon 
+termination, Licensee must cease all use and destroy all copies of the Software. 
+Sections 4-6 and 8-13 survive termination.
+
+================================================================================
+                           9. NO SUPPORT
+================================================================================
+
+ULB provides the Software "as is" and is under no obligation to furnish 
+maintenance, support, updates, or enhancements.
+
+================================================================================
+                       10. WARRANTY DISCLAIMER
+================================================================================
+
+ULB DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, WITHOUT LIMITATION, 
+THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND 
+NON-INFRINGEMENT.
+
+================================================================================
+                     11. LIMITATION OF LIABILITY
+================================================================================
+
+TO THE FULLEST EXTENT PERMITTED BY LAW, THE LICENSOR SHALL NOT BE LIABLE FOR 
+ANY INDIRECT, CONSEQUENTIAL, INCIDENTAL, OR SPECIAL DAMAGES, NOR FOR ANY LOSS 
+OF PROFITS OR DATA, ARISING OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THIS 
+EULA, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+================================================================================
+                         12. EXPORT CONTROL
+================================================================================
+
+Licensee is responsible for complying with all applicable export-control and 
+sanctions regulations.
+
+================================================================================
+                   13. GOVERNING LAW AND JURISDICTION
+================================================================================
+
+This EULA is governed by Belgian law. Any dispute arising under it shall be 
+submitted to the exclusive jurisdiction of the courts of Brussels.
+
+================================================================================
+                   14. ENTIRE AGREEMENT & SEVERABILITY
+================================================================================
+
+This EULA constitutes the entire agreement between the parties concerning the 
+Software. If any provision is held invalid or unenforceable, the remaining 
+provisions shall remain in full force and effect.
+
+================================================================================
+                         COMMERCIAL LICENSING
+================================================================================
+
+For Commercial licensing enquiries, please contact:
+
+    Carlos Eduardo Buss
+    Signal Transduction and Metabolism Laboratory
+    Université libre de Bruxelles
+    Email: carlos.eduardo.buss@ulb.be
+
+================================================================================
+                     Copyright © 2026 Université libre de Bruxelles
+                              All Rights Reserved
+================================================================================
