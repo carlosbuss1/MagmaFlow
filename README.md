@@ -21,6 +21,12 @@
 
 MagmaFlow transforms volcano plot analysis from static display into dynamic biological interpretation, representing the first tool integrating AI-powered literature contextualization with enrichment analysis to convert differential expression data into actionable insights.
 
+<p align="center">
+  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/Updated_Buss2025_Figure_1%20(3).png" alt="Figure 1 - Software Architecture and Workflow" width="1000"/>
+</p>
+
+**Figure 1. MagmaFlow Software Architecture and Workflow.** The platform integrates data processing, visualization, and AI-assisted annotation through a modular architecture. (A) Data import pathway for CSV files derived from standard differential expression analysis tools. (B) Direct integration via the MagmaFlowR plugin. (C) Project state management via JSON files. (D) High-resolution export options. (E) The MagmAI module serves as an integrated research assistant. (F) Gene scoring system utilizing PubTator3 API. (G) Enrichment analysis using EnrichR API. (H) Comprehensive labels derived from PubMed scoring. (I) Interactive Pathway Analysis with Circular Network visualizations.
+
 ---
 
 ## Key Features
@@ -45,34 +51,6 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 | **File Import** | Load target gene lists from text files |
 | **Manual Entry** | Type or paste gene names with smart parsing |
 | **Smart Positioning** | Auto-prevent label overlaps with intelligent spacing |
-
----
-
-### Literature Mining Module
-
-| Feature | Description |
-|:--------|:------------|
-| **PubTator3 Integration** | AI-powered named entity recognition across 36 million PubMed abstracts and 6 million PMC full-text articles |
-| **Dynamic Context Definition** | Autocomplete for Disease/Condition (required) and Treatment/Chemical (optional) with validated MeSH identifiers |
-| **Relation Types Configuration** | Positive/negative correlation, stimulation, inhibition, or general association to match expression patterns |
-| **Dual-API Strategy** | PubTator3 Relations API for Total and Context papers; NCBI E-utilities for Recent papers and PMIDs |
-| **Disease Synonym Expansion** | Automatic inclusion of abbreviations and related terms for disease-specific searches |
-| **Log-Scaled Scoring** | Composite score (2×log(1+Total) + 8×log(1+Context) + 5×log(1+Recent) + StatsBonus) preventing highly-studied genes from dominating |
-| **Clickable PMID Links** | Direct access to publications sorted by date (newest first) |
-
----
-
-### Pathway Enrichment and Circle Plot Visualization
-
-| Feature | Description |
-|:--------|:------------|
-| **Enrichr API Integration** | Over-Representation Analysis across seven pathway databases |
-| **Supported Databases** | Gene Ontology 2023 (BP, MF, CC), KEGG 2021, Reactome 2022, WikiPathways 2023, MSigDB Hallmark 2025 |
-| **Species Support** | Human, Mouse, and Cow (Bos taurus, GO only) |
-| **Analysis Modes** | All significant genes combined, or separate up/down-regulated analyses |
-| **Circle Plot Visualization** | Multi-layer circular diagrams with pathway enrichment, gene expression, and database annotations |
-| **Cross-Pathway Detection** | Curved lines connecting genes appearing in multiple pathways reveal functional relationships |
-| **Bidirectional Workflow** | Pathway discovery informs gene prioritization; volcano visualization contextualizes shared pathway genes |
 
 ---
 
@@ -120,15 +98,51 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 | **mag_landragem()** | Launch MagmaFlow GUI and preload expression data directly from R environment |
 | **Repository** | [github.com/carlosbuss1/magmaflowR](https://github.com/carlosbuss1/magmaflowR) |
 
+<p align="center">
+  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/Updated_Buss2025_Figure_2%20(4).png" alt="Figure 2 - Interactive Annotation and Color Customization" width="1000"/>
+</p>
+
+**Figure 2. Interactive annotation, label management, and color customization.** (A) Target gene labels managed through synchronized checkboxes. (B) Interactive exploration with hover tooltips and double-click selection. (C) Customizable Gurzov-style solid palette. (D) Gradient modes: Classic, Viridis, and Magma palettes. (E) Fine-tuning of gradient color customization.
+
 ---
 
-<p align="center">
-  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/01_MagmaFlow_Panel_git.jpeg" alt="MagmaFlow Interface Overview" width="1000"/>
-</p>
+## Literature Mining Module
+
+| Feature | Description |
+|:--------|:------------|
+| **PubTator3 Integration** | AI-powered named entity recognition across 36 million PubMed abstracts and 6 million PMC full-text articles |
+| **Dynamic Context Definition** | Autocomplete for Disease/Condition (required) and Treatment/Chemical (optional) with validated MeSH identifiers |
+| **Relation Types Configuration** | Positive/negative correlation, stimulation, inhibition, or general association to match expression patterns |
+| **Dual-API Strategy** | PubTator3 Relations API for Total and Context papers; NCBI E-utilities for Recent papers and PMIDs |
+| **Disease Synonym Expansion** | Automatic inclusion of abbreviations and related terms for disease-specific searches |
+| **Log-Scaled Scoring** | Composite score (2×log(1+Total) + 8×log(1+Context) + 5×log(1+Recent) + StatsBonus) preventing highly-studied genes from dominating |
+| **Clickable PMID Links** | Direct access to publications sorted by date (newest first) |
 
 <p align="center">
-  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/02_MagmaFlow_Panel_git.jpeg" alt="MagmaFlow Advanced Features" width="1000"/>
+  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/Updated_Buss2025_Figure_3%20(1).png" alt="Figure 3 - Literature Mining Module" width="1000"/>
 </p>
+
+**Figure 3. Literature Mining module integrating PubTator3 with NCBI E-utilities.** (A) Context Definition through PubTator3 dynamic autocomplete with Disease/Condition and Treatment/Chemical selection. (B) Literature Mining with dual-API strategy retrieving Total Papers, Context-Relevant Papers, and Recent Papers. (C) Literature-Centric Scoring with log-scaled composite score and disease synonym expansion. (D) Curated Cross-Referenced Gene Annotation with ranked genes, evidence summaries, and clickable PMID links.
+
+---
+
+## Pathway Enrichment and Circle Plot Visualization
+
+| Feature | Description |
+|:--------|:------------|
+| **Enrichr API Integration** | Over-Representation Analysis across seven pathway databases |
+| **Supported Databases** | Gene Ontology 2023 (BP, MF, CC), KEGG 2021, Reactome 2022, WikiPathways 2023, MSigDB Hallmark 2025 |
+| **Species Support** | Human, Mouse, and Cow (Bos taurus, GO only) |
+| **Analysis Modes** | All significant genes combined, or separate up/down-regulated analyses |
+| **Circle Plot Visualization** | Multi-layer circular diagrams with pathway enrichment, gene expression, and database annotations |
+| **Cross-Pathway Detection** | Curved lines connecting genes appearing in multiple pathways reveal functional relationships |
+| **Bidirectional Workflow** | Pathway discovery informs gene prioritization; volcano visualization contextualizes shared pathway genes |
+
+<p align="center">
+  <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/Updated_Buss2025_Figure_4%20(6).png" alt="Figure 4 - Pathway Enrichment Analysis" width="1000"/>
+</p>
+
+**Figure 4. Integrated pathway enrichment analysis with interactive visualization.** (A) EnrichR API Integration querying multiple pathway databases. (B) Volcano Plot Pathway Annotation with automatic gene highlighting. (C) Pathway Network Circle Plot displaying pathway enrichment significance, gene expression levels, and database source annotations. (D) ALD Mechanistic Gene Network organized into six functional clusters revealing hub genes and cross-tier relationships.
 
 ---
 
@@ -196,7 +210,7 @@ Visit our [Zenodo repository](https://zenodo.org/records/17107683) for all versi
 
 ### MagmaFlow Academic Binary – End-User License Agreement (EULA)
 
-**Version 3 – 2 October 2025**
+**Version Jan-2026**
 
 By downloading, installing, or using the MagmaFlow executable (the "Software") you ("Licensee") agree to the terms of this EULA with the **Université libre de Bruxelles**, Avenue F. Roosevelt 50, B-1050 Brussels, Belgium ("ULB"), which owns all intellectual-property rights in the Software.
 
@@ -251,8 +265,4 @@ If you use MagmaFlow in your research, please cite:
 | **Commercial Licensing** | carlos.eduardo.buss@ulb.be |
 
 ---
-
-## Acknowledgements
-
-This work was supported by the European Research Council (ERC) Consolidator Grant METAPTPs (GA817940), FNRS-PDR grant 40007740, FNRS-TELEVIE grants, Fonds Paul Génicot, the ULB Foundation, and a PhD scholarship from the China Scholarship Council.
 
