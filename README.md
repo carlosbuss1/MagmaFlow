@@ -4,20 +4,22 @@
 
 <h1 align="center">MagmaFlow</h1>
 
-<h3 align="center"><i>An Interactive Volcano Plot Application for Differential Gene Expression Analysis</i></h3>
+<h3 align="center"><i>An Integrated Desktop Platform for Differential Expression Interpretation Through<br/>AI-Powered Literature Annotation and Pathway Network Analysis</i></h3>
 
 <p align="center">
   <a href="https://www.oracle.com/java/"><img src="https://img.shields.io/badge/Java-17+-orange.svg" alt="Java"></a>
-  <a href="https://openjfx.io/"><img src="https://img.shields.io/badge/JavaFX-17+-blue.svg" alt="JavaFX"></a>
+  <a href="https://openjfx.io/"><img src="https://img.shields.io/badge/JavaFX-17.0.2-blue.svg" alt="JavaFX"></a>
   <a href="#license"><img src="https://img.shields.io/badge/License-Non--Commercial%20EULA-red.svg" alt="License"></a>
-  <a href="https://zenodo.org/records/17011629"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17011629-blue.svg" alt="DOI"></a>
+  <a href="https://zenodo.org/records/17107683"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17107683-blue.svg" alt="DOI"></a>
 </p>
 
 ---
 
 ## Overview
 
-**MagmaFlow** is a powerful, user-friendly JavaFX application designed for creating interactive volcano plots from differential gene expression data. It provides researchers with an intuitive interface to visualize statistical significance versus fold change patterns in genomic datasets with **publication-ready quality**.
+**MagmaFlow** is a cross-platform desktop application combining interactive volcano plot visualization with automated annotation, integrated literature mining, and pathway-level contextual analysis. The platform retrieves relevant PubMed references, pathway memberships, and disease associations directly within an interactive visualization environment, enabling efficient, reproducible, and publication-ready analysis of transcriptomic datasets.
+
+MagmaFlow transforms volcano plot analysis from static display into dynamic biological interpretation, representing the first tool integrating AI-powered literature contextualization with enrichment analysis to convert differential expression data into actionable insights.
 
 ---
 
@@ -28,10 +30,10 @@
 | Feature | Description |
 |:--------|:------------|
 | **Double-Click Gene Selection** | Instantly add/remove target genes by double-clicking data points |
-| **Drag & Drop Labels** | Reposition gene annotations by dragging them anywhere |
-| **Smart Edge Connections** | Choose how annotation lines connect (left, right, center, smart, auto) |
+| **Drag & Drop Labels** | Reposition gene annotations with collision avoidance for publication-ready figures |
+| **Smart Edge Connections** | Five layout modes (Auto, Left, Right, Center, Smart) to reduce overlap |
 | **Advanced Zoom & Pan** | SHIFT+drag panning, mouse wheel zooming, one-click fit-to-viewport |
-| **Real-time Hover Info** | Live gene details with double-click hints on mouse hover |
+| **Real-time Hover Tooltips** | Live gene details displaying name, log₂FC, p-value, and adjusted p-value |
 
 ---
 
@@ -39,11 +41,10 @@
 
 | Feature | Description |
 |:--------|:------------|
+| **Checkbox Control** | Synchronized checkboxes for real-time activation/deactivation of annotations |
 | **File Import** | Load target gene lists from text files |
 | **Manual Entry** | Type or paste gene names with smart parsing |
-| **Checkbox Control** | Individual gene visibility toggles |
 | **Smart Positioning** | Auto-prevent label overlaps with intelligent spacing |
-| **Flexible Connections** | Configurable edge styles for clean, professional plots |
 
 ---
 
@@ -51,13 +52,27 @@
 
 | Feature | Description |
 |:--------|:------------|
-| **PubTator3 Integration** | Semantic entity resolution with AI-powered named entity recognition across 36 million PubMed abstracts |
+| **PubTator3 Integration** | AI-powered named entity recognition across 36 million PubMed abstracts and 6 million PMC full-text articles |
 | **Dynamic Context Definition** | Autocomplete for Disease/Condition (required) and Treatment/Chemical (optional) with validated MeSH identifiers |
 | **Relation Types Configuration** | Positive/negative correlation, stimulation, inhibition, or general association to match expression patterns |
-| **Dual-API Strategy** | PubTator3 Relations API for Total and Context papers, NCBI E-utilities for Recent papers and PMIDs |
+| **Dual-API Strategy** | PubTator3 Relations API for Total and Context papers; NCBI E-utilities for Recent papers and PMIDs |
 | **Disease Synonym Expansion** | Automatic inclusion of abbreviations and related terms for disease-specific searches |
-| **Log-Scaled Scoring** | Weighted composite score preventing highly-studied genes from dominating results |
+| **Log-Scaled Scoring** | Composite score (2×log(1+Total) + 8×log(1+Context) + 5×log(1+Recent) + StatsBonus) preventing highly-studied genes from dominating |
 | **Clickable PMID Links** | Direct access to publications sorted by date (newest first) |
+
+---
+
+### Pathway Enrichment and Circle Plot Visualization
+
+| Feature | Description |
+|:--------|:------------|
+| **Enrichr API Integration** | Over-Representation Analysis across seven pathway databases |
+| **Supported Databases** | Gene Ontology 2023 (BP, MF, CC), KEGG 2021, Reactome 2022, WikiPathways 2023, MSigDB Hallmark 2025 |
+| **Species Support** | Human, Mouse, and Cow (Bos taurus, GO only) |
+| **Analysis Modes** | All significant genes combined, or separate up/down-regulated analyses |
+| **Circle Plot Visualization** | Multi-layer circular diagrams with pathway enrichment, gene expression, and database annotations |
+| **Cross-Pathway Detection** | Curved lines connecting genes appearing in multiple pathways reveal functional relationships |
+| **Bidirectional Workflow** | Pathway discovery informs gene prioritization; volcano visualization contextualizes shared pathway genes |
 
 ---
 
@@ -67,10 +82,10 @@
 |:------|:------------|
 | **Gurzov Classic** | Traditional blue/red coloring for down/up-regulated genes |
 | **MagmaFlow Classic 1** | P-value based gradients |
-| **MagmaFlow Classic 2** | Log2 fold change based gradients |
+| **MagmaFlow Classic 2** | Log₂ fold change based gradients |
 | **MagmaFlow Classic 3** | Combined p-value and fold change gradients |
-| **Viridis & Magma** | Professional scientific color palettes |
-| **Custom Color Pickers** | Direct RGB/Hex color refinement |
+| **Viridis & Magma** | Perceptually uniform, color-blind-friendly scientific palettes |
+| **Custom Color Pickers** | Direct RGB/Hex color refinement with adjustable outlines and transparency |
 
 ---
 
@@ -79,10 +94,10 @@
 | Feature | Description |
 |:--------|:------------|
 | **Independent Font Controls** | Separate sizes for title, axes, ticks, and annotations |
-| **Dynamic Thresholds** | Real-time p-value and log2FC cutoff adjustment |
+| **Dynamic Thresholds** | Real-time p-value and log₂FC cutoff adjustment |
 | **Smart Tick Spacing** | Auto or manual axis intervals for perfect scaling |
 | **Advanced Dot Styling** | Opacity, outlines, sizes with live preview |
-| **Publication Export** | High-res PNG (72-1200 DPI) and vector PDF |
+| **Publication Export** | High-resolution PNG (72–1200 DPI) with scalable off-screen rendering |
 
 ---
 
@@ -90,10 +105,20 @@
 
 | Feature | Description |
 |:--------|:------------|
-| **Complete Project Files** | Save/load all settings, annotations, and customizations |
-| **Auto-save Tracking** | Visual indicators for unsaved changes |
-| **Smart CSV Import** | Intelligent column mapping with auto-detection |
+| **Smart CSV Import** | Automatic detection of standard columns via regular expressions; manual mapping dialog for non-standard headers |
+| **Complete Project Files** | JSON format preserving gene data, thresholds, annotations, label positions, and display preferences |
+| **Auto-save Tracking** | Visual indicators for unsaved changes to prevent data loss |
 | **Session Persistence** | Remember your work across application restarts |
+
+---
+
+### R Integration
+
+| Feature | Description |
+|:--------|:------------|
+| **MagmaFlowR Package** | Companion R package for integration with DESeq2, edgeR, limma, and Seurat pipelines |
+| **mag_landragem()** | Launch MagmaFlow GUI and preload expression data directly from R environment |
+| **Repository** | [github.com/carlosbuss1/magmaflowR](https://github.com/carlosbuss1/magmaflowR) |
 
 ---
 
@@ -119,9 +144,19 @@
 
 ### All Releases
 
-Visit our [Zenodo repository](https://zenodo.org/records/17064020) for all versions and additional files.
+Visit our [Zenodo repository](https://zenodo.org/records/17107683) for all versions and additional files.
 
 > **Note:** MagmaFlow is distributed as a pre-built application only. Source code is not publicly available.
+
+---
+
+## System Requirements
+
+| Specification | Minimum | Recommended (>30,000 genes) |
+|:--------------|:--------|:----------------------------|
+| **RAM** | 4 GB | 8 GB |
+| **Display** | 1280 × 720 | Full HD (1920 × 1080) |
+| **Platform** | macOS, Windows | macOS, Windows |
 
 ---
 
@@ -132,6 +167,28 @@ Visit our [Zenodo repository](https://zenodo.org/records/17064020) for all versi
 | 1 | Download the DMG file from the link above |
 | 2 | Open the DMG and drag MagmaFlow to Applications |
 | 3 | Launch MagmaFlow from Applications folder |
+
+---
+
+## Technical Implementation
+
+| Component | Technology |
+|:----------|:-----------|
+| **Framework** | JavaFX 17.0.2 |
+| **Compiler** | JDK 17 (LTS) |
+| **Architecture** | Model-View-Controller (MVC) |
+| **Rendering** | JavaFX Canvas API with GPU-accelerated GraphicsContext |
+| **Precision** | Double-precision floating-point arithmetic |
+
+---
+
+## External API Integration
+
+| API | Purpose | Endpoint |
+|:----|:--------|:---------|
+| **PubTator3** | AI-powered named entity recognition | `https://www.ncbi.nlm.nih.gov/research/pubtator3-api` |
+| **NCBI E-utilities** | Date-filtered publication queries | `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/` |
+| **Enrichr** | Over-Representation Analysis | `https://maayanlab.cloud/Enrichr/` |
 
 ---
 
@@ -148,16 +205,12 @@ By downloading, installing, or using the MagmaFlow executable (the "Software") y
 | Term | Definition |
 |:-----|:-----------|
 | **Executable / Software** | The compiled distribution of MagmaFlow (DMG, MSI, JAR or similar) provided by ULB |
-| **Academic Use** | Use by accredited higher-education or publicly funded research bodies, for teaching, research, or other not-for-profit scholarly purposes, with no direct or indirect commercial advantage |
-| **Non-Commercial** | Any activity that is not primarily intended for commercial gain and is not carried out for the benefit of a for-profit entity |
+| **Academic Use** | Use by accredited higher-education or publicly funded research bodies, for teaching, research, or other not-for-profit scholarly purposes |
+| **Non-Commercial** | Any activity not primarily intended for commercial gain and not carried out for the benefit of a for-profit entity |
 
 #### License Grant
 
 Subject to this EULA, ULB grants Licensee a **non-exclusive, non-transferable, royalty-free licence** to download, install, and run the Software solely for Academic and Non-Commercial purposes. No right to sublicense is granted.
-
-#### Redistribution
-
-Licensee may share an unmodified copy of the Executable with colleagues within Academic or publicly funded institutions provided that (a) this EULA accompanies every copy, and (b) the Citation is included. Publication of the Software or this EULA on public repositories, websites, or mirrors is prohibited.
 
 #### Restrictions
 
@@ -166,10 +219,7 @@ Licensee shall not:
 - Modify, adapt, translate, or create derivative works of the Software
 - Reverse-engineer, decompile, or disassemble the Software except as permitted by applicable law
 - Offer the Software to third parties as a hosted or cloud service (SaaS) or otherwise provide remote access
-
-#### Ownership
-
-The Software and all associated intellectual-property rights remain the exclusive property of ULB. No rights are granted other than those expressly stated herein.
+- Publish the Software or this EULA on public repositories, websites, or mirrors
 
 #### Warranty Disclaimer
 
@@ -181,7 +231,7 @@ This EULA is governed by Belgian law. Any dispute arising under it shall be subm
 
 ---
 
-**For Commercial licensing inquiries, please contact:** carlos.eduardo.buss@ulb.be
+**For Commercial licensing inquiries:** carlos.eduardo.buss@ulb.be
 
 ---
 
@@ -189,12 +239,20 @@ This EULA is governed by Belgian law. Any dispute arising under it shall be subm
 
 If you use MagmaFlow in your research, please cite:
 
-> **Buss C E et al.** MagmaFlow: An Interactive Volcano Plot Application for Differential Gene Expression Analysis. *FEBS Letters* (submitted). DOI: [10.5281/zenodo.17107683](https://zenodo.org/records/17107683)
+> **Buss CE, Li A, Gilglioni EH, Bansal M, Singh SP, Bakiri L, Cardozo AK, Gurzov EN.** MagmaFlow: An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Pathway Network Analysis. *FEBS Letters* (2025). DOI: [10.5281/zenodo.17107683](https://zenodo.org/records/17107683)
 
 ---
 
 ## Contact
 
-For questions, suggestions, or bug reports, please open an issue on GitHub.
+| Purpose | Contact |
+|:--------|:--------|
+| **Questions & Bug Reports** | Open an issue on [GitHub](https://github.com/carlosbuss1/MagmaFlow) |
+| **Commercial Licensing** | carlos.eduardo.buss@ulb.be |
 
-For commercial licensing inquiries, please contact **carlos.eduardo.buss@ulb.be**.
+---
+
+## Acknowledgements
+
+This work was supported by the European Research Council (ERC) Consolidator Grant METAPTPs (GA817940), FNRS-PDR grant 40007740, FNRS-TELEVIE grants, Fonds Paul Génicot, the ULB Foundation, and a PhD scholarship from the China Scholarship Council.
+
