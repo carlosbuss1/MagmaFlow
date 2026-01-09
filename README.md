@@ -142,7 +142,7 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
   <img src="https://github.com/carlosbuss1/MagmaFlow/blob/main/Updated_Buss2025_Figure_4%20(6).png" alt="Figure 4 - Pathway Enrichment Analysis" width="1000"/>
 </p>
 
-**Figure 4. Integrated pathway enrichment analysis with interactive visualization.** (A) EnrichR API Integration querying multiple pathway databases. (B) Volcano Plot Pathway Annotation with automatic gene highlighting. (C) Pathway Network Circle Plot displaying pathway enrichment significance, gene expression levels, and database source annotations. (D) ALD Mechanistic Gene Network organized into six functional clusters revealing hub genes and cross-tier relationships.
+**Figure 4. Integrated pathway enrichment analysis with interactive visualization.** (A) EnrichR API Integration querying multiple pathway databases. (B) Volcano Plot Pathway Annotation with automatic gene highlighting. (C) Pathway Network Circle Plot displaying pathway enrichment significance, gene expression levels, and database source annotations.
 
 ---
 
@@ -264,5 +264,6 @@ If you use MagmaFlow in your research, please cite:
 | **Commercial Licensing** | carlos.eduardo.buss@ulb.be |
 
 ---
+
 
 
