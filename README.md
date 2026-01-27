@@ -148,11 +148,15 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 
 ## Download
 
-### Ready-to-Use Application
+### Ready-to-Use Applications
 
 <p align="center">
-  <a href="https://zenodo.org/records/17107683/files/MagmaFlow-10.0.3.dmg?download=1">
-    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.3%20for%20macOS-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS">
+  <a href="https://zenodo.org/records/18380556/files/MagmaFlow_MacOS_v10.0.4.dmg?download=1">
+    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.4%20for%20macOS-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS" width="250">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://zenodo.org/records/18380556/files/MagmaFlow_Windows_10.0.4.exe?download=1">
+    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.4%20for%20Windows-brightgreen?style=for-the-badge&logo=windows" alt="Download for Windows" width="250">
   </a>
 </p>
 
@@ -170,17 +174,25 @@ Visit our [Zenodo repository](https://zenodo.org/records/17107683) for all versi
 |:--------------|:--------|:----------------------------|
 | **RAM** | 4 GB | 8 GB |
 | **Display** | 1280 × 720 | Full HD (1920 × 1080) |
-| **Platform** | macOS, Windows | macOS, Windows |
+| **Platform** | macOS 10.15+, Windows 10+ | macOS 12+, Windows 11 |
 
 ---
 
 ## Installation
 
+### macOS
 | Step | Action |
 |:----:|:-------|
 | 1 | Download the DMG file from the link above |
 | 2 | Open the DMG and drag MagmaFlow to Applications |
 | 3 | Launch MagmaFlow from Applications folder |
+
+### Windows
+| Step | Action |
+|:----:|:-------|
+| 1 | Download the EXE installer from the link above |
+| 2 | Run the installer and follow the setup wizard |
+| 3 | Launch MagmaFlow from Start Menu or desktop shortcut |
 
 ---
 
@@ -253,7 +265,7 @@ This EULA is governed by Belgian law. Any dispute arising under it shall be subm
 
 If you use MagmaFlow in your research, please cite:
 
-> **Buss CE, Li A, Gilglioni EH, Bansal M, Singh SP, Bakiri L, Cardozo AK, Gurzov EN.** MagmaFlow: An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Pathway Network Analysis. *In Prep* (2026). In meantime please cite: Buss, C. E. (2025). MagmaFlow_v10.0.3: Interactive Volcano Plot Application. Zenodo. https://doi.org/10.5281/zenodo.17107683
+> **Buss CE, Li A, Gilglioni EH, Bansal M, Singh SP, Bakiri L, Cardozo AK, Gurzov EN.** MagmaFlow: An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Pathway Network Analysis. *Submitted* (2026). In meantime please cite: Buss, C. E. (2025). MagmaFlow_v10.0.3: Interactive Volcano Plot Application. Zenodo. https://doi.org/10.5281/zenodo.17107683
 ---
 
 ## Contact
@@ -262,8 +274,3 @@ If you use MagmaFlow in your research, please cite:
 |:--------|:--------|
 | **Questions & Bug Reports** | Open an issue on [GitHub](https://github.com/carlosbuss1/MagmaFlow) |
 | **Commercial Licensing** | carlos.eduardo.buss@ulb.be |
-
----
-
-
-
