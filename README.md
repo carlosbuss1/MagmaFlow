@@ -22,7 +22,7 @@
 MagmaFlow transforms volcano plot analysis from static display into dynamic biological interpretation, representing the first tool integrating AI-powered literature contextualization with enrichment analysis to convert differential expression data into actionable insights.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/1.png" alt="Figure 1 - Software Architecture and Workflow" width="1000"/>
+  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/f1.png" alt="Figure 1 - Software Architecture and Workflow" width="1000"/>
 </p>
 
 **Figure 1. MagmaFlow Software Architecture and Workflow.** The platform integrates data processing, visualization, and AI-assisted annotation through a modular architecture. (A) Data import pathway for CSV files derived from standard differential expression analysis tools. (B) Direct integration via the MagmaFlowR plugin. (C) Project state management via JSON files. (D) High-resolution export options. (E) The MagmAI module serves as an integrated research assistant. (F) Gene scoring system utilizing PubTator3 API. (G) Enrichment analysis using EnrichR API. (H) Comprehensive labels derived from PubMed scoring. (I) Interactive Pathway Analysis with Circular Network visualizations.
@@ -275,3 +275,4 @@ If you use MagmaFlow in your research, please cite:
 |:--------|:--------|
 | **Questions & Bug Reports** | Open an issue on [GitHub](https://github.com/carlosbuss1/MagmaFlow) |
 | **Commercial Licensing** | carlos.eduardo.buss@ulb.be |
+
