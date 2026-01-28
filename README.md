@@ -265,7 +265,7 @@ This EULA is governed by Belgian law. Any dispute arising under it shall be subm
 
 If you use MagmaFlow in your research, please cite:
 
-> **Buss CE, Li A, Gilglioni EH, Bansal M, Singh SP, Bakiri L, Cardozo AK, Gurzov EN.** MagmaFlow: An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Pathway Network Analysis. *In Prep* (2026). In meantime please cite: Buss, C. E. (2025). MagmaFlow_v10.0.3: Interactive Volcano Plot Application. Zenodo. https://doi.org/10.5281/zenodo.17107683
+> **Buss, C. E. (2026). MagmaFlow_v10.0.4: MagmaFlow An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Pathway Network Analysis (v10.0.4). Zenodo. https://doi.org/10.5281/zenodo.18380556
 ---
 
 ## Contact
@@ -274,3 +274,4 @@ If you use MagmaFlow in your research, please cite:
 |:--------|:--------|
 | **Questions & Bug Reports** | Open an issue on [GitHub](https://github.com/carlosbuss1/MagmaFlow) |
 | **Commercial Licensing** | carlos.eduardo.buss@ulb.be |
+
