@@ -13,6 +13,9 @@
   <a href="https://zenodo.org/records/17107683"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.17107683-blue.svg" alt="DOI"></a>
 </p>
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/header.png" alt="MagmaFlow Header" width="1000"/>
+</p>
 ---
 
 ## Overview
@@ -275,4 +278,5 @@ If you use MagmaFlow in your research, please cite:
 |:--------|:--------|
 | **Questions & Bug Reports** | Open an issue on [GitHub](https://github.com/carlosbuss1/MagmaFlow) |
 | **Commercial Licensing** | carlos.eduardo.buss@ulb.be |
+
 
