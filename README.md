@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_header.png" alt="MagmaFlow Header" width="1000"/>
+  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/header.png" alt="MagmaFlow Header" width="1000"/>
 </p>
 
 <h1 align="center">MagmaFlow</h1>
@@ -22,7 +22,7 @@
 MagmaFlow transforms volcano plot analysis from static display into dynamic biological interpretation, representing the first tool integrating AI-powered literature contextualization with enrichment analysis to convert differential expression data into actionable insights.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/Updated_Buss2025_Figure_1%20(3).png" alt="Figure 1 - Software Architecture and Workflow" width="1000"/>
+  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/1.png" alt="Figure 1 - Software Architecture and Workflow" width="1000"/>
 </p>
 
 **Figure 1. MagmaFlow Software Architecture and Workflow.** The platform integrates data processing, visualization, and AI-assisted annotation through a modular architecture. (A) Data import pathway for CSV files derived from standard differential expression analysis tools. (B) Direct integration via the MagmaFlowR plugin. (C) Project state management via JSON files. (D) High-resolution export options. (E) The MagmAI module serves as an integrated research assistant. (F) Gene scoring system utilizing PubTator3 API. (G) Enrichment analysis using EnrichR API. (H) Comprehensive labels derived from PubMed scoring. (I) Interactive Pathway Analysis with Circular Network visualizations.
@@ -99,7 +99,7 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 | **Repository** | [github.com/carlosbuss1/magmaflowR](https://github.com/carlosbuss1/magmaflowR) |
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/Updated_Buss2025_Figure_2%20(4).png" alt="Figure 2 - Interactive Annotation and Color Customization" width="1000"/>
+  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/2.png" alt="Figure 2 - Interactive Annotation and Color Customization" width="1000"/>
 </p>
 
 **Figure 2. Interactive annotation, label management, and color customization.** (A) Target gene labels managed through synchronized checkboxes. (B) Interactive exploration with hover tooltips and double-click selection. (C) Customizable Gurzov-style solid palette. (D) Gradient modes: Classic, Viridis, and Magma palettes. (E) Fine-tuning of gradient color customization.
@@ -119,7 +119,7 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 | **Clickable PMID Links** | Direct access to publications sorted by date (newest first) |
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/Updated_Buss2025_Figure_3%20(1).png" alt="Figure 3 - Literature Mining Module" width="1000"/>
+  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/3.png" alt="Figure 3 - Literature Mining Module" width="1000"/>
 </p>
 
 **Figure 3. Literature Mining module integrating PubTator3 with NCBI E-utilities.** (A) Context Definition through PubTator3 dynamic autocomplete with Disease/Condition and Treatment/Chemical selection. (B) Literature Mining with dual-API strategy retrieving Total Papers, Context-Relevant Papers, and Recent Papers. (C) Literature-Centric Scoring with log-scaled composite score and disease synonym expansion. (D) Curated Cross-Referenced Gene Annotation with ranked genes, evidence summaries, and clickable PMID links.
@@ -139,7 +139,7 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 | **Bidirectional Workflow** | Pathway discovery informs gene prioritization; volcano visualization contextualizes shared pathway genes |
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/Updated_Buss2025_Figure_4%20(6).png" alt="Figure 4 - Pathway Enrichment Analysis" width="1000"/>
+  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/4.png" alt="Figure 4 - Pathway Enrichment Analysis" width="1000"/>
 </p>
 
 **Figure 4. Integrated pathway enrichment analysis with interactive visualization.** (A) EnrichR API Integration querying multiple pathway databases. (B) Volcano Plot Pathway Annotation with automatic gene highlighting. (C) Pathway Network Circle Plot displaying pathway enrichment significance, gene expression levels, and database source annotations.
@@ -266,6 +266,7 @@ This EULA is governed by Belgian law. Any dispute arising under it shall be subm
 If you use MagmaFlow in your research, please cite:
 
 > **Buss, C. E. (2026). MagmaFlow_v10.0.4: MagmaFlow An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Pathway Network Analysis (v10.0.4). Zenodo. https://doi.org/10.5281/zenodo.18380556
+
 ---
 
 ## Contact
@@ -274,4 +275,3 @@ If you use MagmaFlow in your research, please cite:
 |:--------|:--------|
 | **Questions & Bug Reports** | Open an issue on [GitHub](https://github.com/carlosbuss1/MagmaFlow) |
 | **Commercial Licensing** | carlos.eduardo.buss@ulb.be |
-
