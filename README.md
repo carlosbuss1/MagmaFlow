@@ -1,108 +1,18 @@
-<p align="center">
-  <img src="header.png" alt="MagmaFlow Header" width="1000"/>
-</p>
+# MagmaFlow
 
-<h1 align="center">MagmaFlow</h1>
+## Figures
 
-<h3 align="center"><i>An Integrated Desktop Platform for Differential Expression Interpretation Through<br/>AI-Powered Literature Annotation and Pathway Network Analysis</i></h3>
+### Figure 1
+<img src="https://github.com/carlosbuss1/MagmaFlow/raw/main/MagmaFlow_1.jpg" width="100%"/>
 
-<p align="center">
-  <a href="https://www.oracle.com/java/"><img src="https://img.shields.io/badge/Java-17+-orange.svg" alt="Java"></a>
-  <a href="https://openjfx.io/"><img src="https://img.shields.io/badge/JavaFX-17.0.2-blue.svg" alt="JavaFX"></a>
-  <a href="#license"><img src="https://img.shields.io/badge/License-Non--Commercial%20EULA-red.svg" alt="License"></a>
-  <a href="https://zenodo.org/records/18380556"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.18380556-blue.svg" alt="DOI"></a>
-</p>
+### Figure 2
+<img src="https://github.com/carlosbuss1/MagmaFlow/raw/main/MagmaFlow_2.jpg" width="100%"/>
 
----
+### Figure 3
+<img src="https://github.com/carlosbuss1/MagmaFlow/raw/main/MagmaFlow_3.jpg" width="100%"/>
 
-## Overview
-
-**MagmaFlow** is a cross-platform desktop application combining interactive volcano plot visualization with automated annotation, integrated literature mining, and pathway-level contextual analysis. The platform retrieves relevant PubMed references, pathway memberships, and disease associations directly within an interactive visualization environment, enabling efficient, reproducible, and publication-ready analysis of transcriptomic datasets.
-
-MagmaFlow transforms volcano plot analysis from static display into dynamic biological interpretation, representing the first tool integrating AI-powered literature contextualization with enrichment analysis to convert differential expression data into actionable insights.
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_1.jpg" alt="Figure 1 - Software Architecture and Workflow" width="100%"/>
-</p>
-
-**Figure 1. MagmaFlow Software Architecture and Workflow.** The platform integrates data processing, visualization, and AI-assisted annotation through a modular architecture. (A) Data import pathway for CSV files derived from standard differential expression analysis tools. (B) Direct integration via the MagmaFlowR plugin. (C) Project state management via JSON files. (D) High-resolution export options. (E) The MagmAI module serves as an integrated research assistant. (F) Gene scoring system utilizing PubTator3 API. (G) Enrichment analysis using EnrichR API. (H) Comprehensive labels derived from PubMed scoring. (I) Interactive Pathway Analysis with Circular Network visualizations.
+### Figure 4
+<img src="https://github.com/carlosbuss1/MagmaFlow/raw/main/MagmaFlow_4.jpg" width="100%"/>
 
 ---
-
-## Key Features
-
-### Interactive Visualization
-
-| Feature | Description |
-|:--------|:------------|
-| **Double-Click Gene Selection** | Instantly add/remove target genes by double-clicking data points |
-| **Drag & Drop Labels** | Reposition gene annotations with collision avoidance for publication-ready figures |
-| **Real-time Filtering** | Adjust p-value and log2 fold-change thresholds dynamically |
-| **High-resolution Export** | Export figures as PNG, JPEG, or SVG for publications |
-
-### AI-Powered Annotation
-
-| Feature | Description |
-|:--------|:------------|
-| **MagmAI Assistant** | Integrated research assistant for gene function interpretation |
-| **PubMed Mining** | Automatic retrieval of relevant literature via PubTator3 API |
-| **Gene Scoring** | Context-aware relevance scoring based on publication frequency |
-| **Disease Associations** | Automatic mapping to known disease-gene relationships |
-
-### Pathway Analysis
-
-| Feature | Description |
-|:--------|:------------|
-| **Enrichment Analysis** | Integration with EnrichR API for pathway overrepresentation |
-| **Circular Network Visualization** | Interactive pathway relationship networks |
-| **Multi-database Support** | KEGG, GO, Reactome, and custom gene sets |
-| **Exportable Results** | Tables and networks ready for publication |
-
----
-
-## Interactive Volcano Plot Demo
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_2.jpg" alt="Figure 2 - Interactive Volcano Plot Interface" width="100%"/>
-</p>
-
-**Figure 2. Interactive Volcano Plot Interface.** Main visualization window showing differential expression results. Significant genes are color-coded (red: upregulated, blue: downregulated). Double-click any point to add gene labels. The interface supports dynamic threshold adjustment and real-time filtering.
-
----
-
-## Pathway Network Visualization
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_3.jpg" alt="Figure 3 - Circular Network Visualization" width="100%"/>
-</p>
-
-**Figure 3. Circular Network Visualization.** Pathway enrichment results displayed as an interactive circular network. Nodes represent pathways, with edge thickness indicating gene overlap. Click any node to view detailed pathway information and member genes.
-
----
-
-## MagmAI Literature Annotation
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_4.jpg" alt="Figure 4 - AI-Powered Literature Annotation" width="100%"/>
-</p>
-
-**Figure 4. AI-Powered Literature Annotation.** The MagmAI module retrieves and ranks PubMed publications relevant to selected genes. Results include publication counts, relevance scores, and direct links to abstracts. Disease associations and pathway memberships are automatically extracted from the literature.
-
----
-
-## Installation
-
-### Prerequisites
-
-- **Java 17** or higher ([Download](https://www.oracle.com/java/technologies/downloads/))
-- **Internet connection** for API-based features (PubMed, EnrichR)
-
-### Quick Install
-
-#### Windows
-Download and run `MagmaFlow-*.exe` from [Releases](https://github.com/carlosbuss1/MagmaFlow/releases)
-
-#### macOS
-```bash
-# Download the .dmg file, then:
-cp -r MagmaFlow.app /Applications/
+**MagmaFlow** - Differential Expression Analysis Platform
