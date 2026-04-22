@@ -22,7 +22,7 @@
 MagmaFlow transforms volcano plot analysis from static display into dynamic biological interpretation, representing the first tool integrating AI-powered literature contextualization with enrichment analysis to convert differential expression data into actionable insights.
 
 <p align="center">
-  <img src="MagmaFlow_1.jpg" alt="Figure 1 - Software Architecture and Workflow" width="100%"/>
+  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_1.jpg" alt="Figure 1 - Software Architecture and Workflow" width="100%"/>
 </p>
 
 **Figure 1. MagmaFlow Software Architecture and Workflow.** The platform integrates data processing, visualization, and AI-assisted annotation through a modular architecture. (A) Data import pathway for CSV files derived from standard differential expression analysis tools. (B) Direct integration via the MagmaFlowR plugin. (C) Project state management via JSON files. (D) High-resolution export options. (E) The MagmAI module serves as an integrated research assistant. (F) Gene scoring system utilizing PubTator3 API. (G) Enrichment analysis using EnrichR API. (H) Comprehensive labels derived from PubMed scoring. (I) Interactive Pathway Analysis with Circular Network visualizations.
@@ -60,6 +60,36 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 
 ---
 
+## Interactive Volcano Plot Demo
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_2.jpg" alt="Figure 2 - Interactive Volcano Plot Interface" width="100%"/>
+</p>
+
+**Figure 2. Interactive Volcano Plot Interface.** Main visualization window showing differential expression results. Significant genes are color-coded (red: upregulated, blue: downregulated). Double-click any point to add gene labels. The interface supports dynamic threshold adjustment and real-time filtering.
+
+---
+
+## Pathway Network Visualization
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_3.jpg" alt="Figure 3 - Circular Network Visualization" width="100%"/>
+</p>
+
+**Figure 3. Circular Network Visualization.** Pathway enrichment results displayed as an interactive circular network. Nodes represent pathways, with edge thickness indicating gene overlap. Click any node to view detailed pathway information and member genes.
+
+---
+
+## MagmAI Literature Annotation
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/carlosbuss1/MagmaFlow/main/MagmaFlow_4.jpg" alt="Figure 4 - AI-Powered Literature Annotation" width="100%"/>
+</p>
+
+**Figure 4. AI-Powered Literature Annotation.** The MagmAI module retrieves and ranks PubMed publications relevant to selected genes. Results include publication counts, relevance scores, and direct links to abstracts. Disease associations and pathway memberships are automatically extracted from the literature.
+
+---
+
 ## Installation
 
 ### Prerequisites
@@ -67,19 +97,12 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 - **Java 17** or higher ([Download](https://www.oracle.com/java/technologies/downloads/))
 - **Internet connection** for API-based features (PubMed, EnrichR)
 
-### Download
-
-Download the latest release from the [Releases page](https://github.com/carlosbuss1/MagmaFlow/releases)
-
-### Platform-specific Instructions
+### Quick Install
 
 #### Windows
-1. Double-click `MagmaFlow-*.exe`
-2. Follow installation wizard
-3. Launch from Start Menu
+Download and run `MagmaFlow-*.exe` from [Releases](https://github.com/carlosbuss1/MagmaFlow/releases)
 
 #### macOS
 ```bash
-# Download the .dmg file
-# Open and drag MagmaFlow to Applications folder
-# Launch from Applications
+# Download the .dmg file, then:
+cp -r MagmaFlow.app /Applications/
