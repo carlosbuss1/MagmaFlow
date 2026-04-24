@@ -143,12 +143,16 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 ### Ready-to-Use Applications
 
 <p align="center">
-  <a href="https://zenodo.org/records/18380556/files/MagmaFlow_MacOS_v10.0.4.dmg?download=1">
-    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.4%20for%20macOS-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS" width="250">
+  <a href="https://zenodo.org/records/18380556/files/MagmaFlow-arm64-1.0.0.dmg?download=1">
+    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v1.0.0%20macOS%20Apple%20Silicon-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS Apple Silicon" width="320">
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://zenodo.org/records/18380556/files/MagmaFlow_Windows_10.0.4.exe?download=1">
-    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.4%20for%20Windows-brightgreen?style=for-the-badge&logo=windows" alt="Download for Windows" width="250">
+  <a href="https://zenodo.org/records/18380556/files/MagmaFlow-x86_64-1.0.0.dmg?download=1">
+    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v1.0.0%20macOS%20Intel-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS Intel" width="290">
+  </a>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="https://zenodo.org/records/18380556/files/MagmaFlow_Windows_1.0.0.exe?download=1">
+    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v1.0.0%20for%20Windows-brightgreen?style=for-the-badge&logo=windows" alt="Download for Windows" width="280">
   </a>
 </p>
 
@@ -162,11 +166,31 @@ Visit our [Zenodo repository](https://zenodo.org/records/18380556) for all versi
 
 ## System Requirements
 
-| Specification | Minimum | Recommended (>30,000 genes) |
-|:--------------|:--------|:----------------------------|
-| **RAM** | 4 GB | 8 GB |
-| **Display** | 1280 × 720 | Full HD (1920 × 1080) |
-| **Platform** | macOS 10.15+, Windows 10+ | macOS 12+, Windows 11 |
+### macOS — Apple Silicon (arm64)
+
+| Specification | Requirement |
+|:--------------|:------------|
+| **Chip** | Apple M1, M2, M3, or M4 |
+| **macOS** | macOS 11 Big Sur or later (macOS 13 Ventura or later recommended) |
+| **RAM** | 4 GB minimum — 8 GB recommended for datasets >30,000 genes |
+| **Display** | 1280 × 720 minimum — Full HD (1920 × 1080) recommended |
+
+### macOS — Intel (x86_64)
+
+| Specification | Requirement |
+|:--------------|:------------|
+| **Chip** | Intel Core i5, i7, or i9 (64-bit) |
+| **macOS** | macOS 10.15 Catalina or later (macOS 12 Monterey or later recommended) |
+| **RAM** | 4 GB minimum — 8 GB recommended for datasets >30,000 genes |
+| **Display** | 1280 × 720 minimum — Full HD (1920 × 1080) recommended |
+
+### Windows
+
+| Specification | Requirement |
+|:--------------|:------------|
+| **OS** | Windows 10 (64-bit) or later — Windows 11 recommended |
+| **RAM** | 4 GB minimum — 8 GB recommended for datasets >30,000 genes |
+| **Display** | 1280 × 720 minimum — Full HD (1920 × 1080) recommended |
 
 ---
 
@@ -176,11 +200,11 @@ Visit our [Zenodo repository](https://zenodo.org/records/18380556) for all versi
 
 | Step | Action |
 |:----:|:-------|
-| 1 | Download the DMG file from the link above |
-| 2 | Open the DMG and drag MagmaFlow to Applications |
+| 1 | Identify your Mac: Apple menu → About This Mac. Under **Chip**, if it shows Apple M1/M2/M3/M4 download the **Apple Silicon** DMG. If it shows an Intel processor, download the **Intel** DMG |
+| 2 | Open the downloaded DMG and drag MagmaFlow to your Applications folder |
 | 3 | Launch MagmaFlow from the Applications folder |
 
-> **macOS Security Note:** The MagmaFlow binary is code-signed and notarized through the Apple Developer Program, ensuring a smooth installation experience across all supported macOS versions. Should a Gatekeeper security prompt appear upon first launch, navigate to System Settings → Privacy & Security → Open Anyway, or right-click the application and select Open. No modification of macOS security settings is required.
+> **macOS Security:** MagmaFlow is code-signed and notarized through the Apple Developer Program (Team ID: 2SYQA7494X). Both Apple Silicon (arm64) and Intel (x86_64) builds are fully certified and stapled, ensuring a smooth installation on all supported macOS versions with no Gatekeeper warnings. No modification of macOS security settings is required.
 
 ### Windows
 
@@ -261,7 +285,7 @@ This EULA is governed by Belgian law. Any dispute arising under it shall be subm
 
 If you use MagmaFlow in your research, please cite:
 
-> Buss, C. E. (2026). MagmaFlow_v10.0.4: MagmaFlow An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Pathway Network Analysis (v10.0.4). Zenodo. https://doi.org/10.5281/zenodo.18380556
+> Buss, C. E. (2026). MagmaFlow_v1.0.0: MagmaFlow An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Pathway Network Analysis (v1.0.0). Zenodo. https://doi.org/10.5281/zenodo.18380556
 
 ---
 
