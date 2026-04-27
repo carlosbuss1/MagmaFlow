@@ -147,11 +147,11 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
     <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.5%20macOS%20Apple%20Silicon-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS Apple Silicon" width="320">
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://zenodo.org/records/19736190/files/MagmaFlow-MacOs_x86_64-10.0.5.dmg?download=1">
-    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.5%20macOS%20Intel-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS Intel" width="290">
+  <a href="https://zenodo.org/records/19807133/files/MagmaFlow-x86_64_10.0.5.dmg?download=1">
+    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.5%20macOS%20Intel%20%28all%20versions%29-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS Intel" width="320">
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://zenodo.org/records/19736190/files/MagmaFlow-10.0.5_Windows.exe?download=1">
+  <a href="https://zenodo.org/records/19807133/files/MagmaFlow-10.0.5_Windows.exe?download=1">
     <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.5%20for%20Windows-brightgreen?style=for-the-badge&logo=windows" alt="Download for Windows" width="280">
   </a>
 </p>
@@ -170,17 +170,17 @@ Visit our [Zenodo repository](https://zenodo.org/records/19736190) for all versi
 
 | Specification | Requirement |
 |:--------------|:------------|
-| **Chip** | Apple M1, M2, M3, or M4 |
+| **Chip** | Apple M1, M2, M3, or M4 (Mac purchased 2020 or later) |
 | **macOS** | macOS 11 Big Sur or later (macOS 13 Ventura or later recommended) |
 | **RAM** | 4 GB minimum — 8 GB recommended for datasets >30,000 genes |
 | **Display** | 1280 × 720 minimum — Full HD (1920 × 1080) recommended |
 
-### macOS — Intel (x86_64)
+### macOS — Intel (x86_64 legacy build, all Intel Macs)
 
 | Specification | Requirement |
 |:--------------|:------------|
-| **Chip** | Intel Core i5, i7, or i9 (64-bit) |
-| **macOS** | macOS 10.15 Catalina or later (macOS 12 Monterey or later recommended) |
+| **Chip** | Intel Core i5, i7, or i9 (64-bit) — any Intel Mac |
+| **macOS** | macOS 10.12 Sierra or later |
 | **RAM** | 4 GB minimum — 8 GB recommended for datasets >30,000 genes |
 | **Display** | 1280 × 720 minimum — Full HD (1920 × 1080) recommended |
 
@@ -196,15 +196,28 @@ Visit our [Zenodo repository](https://zenodo.org/records/19736190) for all versi
 
 ## Installation
 
-### macOS
+### macOS — Apple Silicon
 
 | Step | Action |
 |:----:|:-------|
-| 1 | Identify your Mac: Apple menu → About This Mac. Under **Chip**, if it shows Apple M1/M2/M3/M4 download the **Apple Silicon** DMG. If it shows an Intel processor, download the **Intel** DMG |
-| 2 | Open the downloaded DMG and drag MagmaFlow to your Applications folder |
-| 3 | Launch MagmaFlow from the Applications folder |
+| 1 | Confirm your Mac has an Apple M1/M2/M3/M4 chip: Apple menu → About This Mac → Chip |
+| 2 | Download `MagmaFlow-MacOs_arm64-10.0.5.dmg` |
+| 3 | Open the DMG and drag MagmaFlow to your Applications folder |
+| 4 | Launch MagmaFlow from the Applications folder |
 
-> **macOS Security:** MagmaFlow is code-signed and notarized through the Apple Developer Program (Team ID: 2SYQA7494X). Both Apple Silicon (arm64) and Intel (x86_64) builds are fully certified and stapled, ensuring a smooth installation on all supported macOS versions with no Gatekeeper warnings. No modification of macOS security settings is required.
+> **macOS Security (Apple Silicon):** MagmaFlow is code-signed and notarized through the Apple Developer Program (Team ID: 2SYQA7494X). No Gatekeeper warnings will appear.
+
+### macOS — Intel (all versions)
+
+| Step | Action |
+|:----:|:-------|
+| 1 | Confirm your Mac has an Intel processor: Apple menu → About This Mac → Processor |
+| 2 | Download `MagmaFlow-x86_64_10.0.5.dmg` |
+| 3 | Right-click the DMG and select **Open** |
+| 4 | Click **Open** in the security dialog |
+| 5 | Drag MagmaFlow to your Applications folder and launch normally |
+
+> **macOS Security (Intel):** The Intel build is distributed without Apple notarization due to a known incompatibility between Apple's hardened runtime requirement and the JVM memory model on older macOS versions. The right-click open step is a standard one-time Gatekeeper override for trusted software and is fully documented in Apple's official guidance.
 
 ### Windows
 
