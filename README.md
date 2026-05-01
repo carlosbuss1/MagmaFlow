@@ -125,7 +125,7 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 | Feature | Description |
 |:--------|:------------|
 | **Enrichr API Integration** | Over-Representation Analysis across seven pathway databases |
-| **Supported Databases** | Gene Ontology 2023 (BP, MF, CC), KEGG 2026, Reactome 2024, WikiPathways 2024, MSigDB Hallmark 2025 |
+| **Supported Databases** | Gene Ontology 2023 (BP, MF, CC), KEGG 2026, Reactome 2024, WikiPathways 2024, MSigDB Hallmark 2025. Database release versions are explicitly specified in each API call to ensure reproducibility of enrichment results across MagmaFlow versions |
 | **Species Support** | Human, Mouse, and Cow (*Bos taurus*, GO only) |
 | **Analysis Modes** | All significant genes combined, or separate up/down-regulated analyses |
 | **Circle Plot Visualization** | Multi-layer circular diagrams with pathway enrichment, gene expression, and database annotations. A dedicated customization console allows full configuration of plot dimensions, node sizes, label font sizes, label orientation, edge weights, and color schemes |
