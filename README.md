@@ -298,7 +298,7 @@ This EULA is governed by Belgian law. Any dispute arising under it shall be subm
 
 If you use MagmaFlow in your research, please cite:
 
-> Buss, C. E. (2026). MagmaFlow_v10.0.5: MagmaFlow An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Enrichment Analysis (v10.0.5). Zenodo. https://doi.org/10.5281/zenodo.19736190
+> Buss, C. E. (2026). MagmaFlow_v10.0.5: MagmaFlow An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Enrichment Analysis (v10.0.5). Zenodo. https://doi.org/10.5281/zenodo.19807133
 
 ---
 
