@@ -10,7 +10,7 @@
   <a href="https://www.oracle.com/java/"><img src="https://img.shields.io/badge/Java-17+-orange.svg" alt="Java"></a>
   <a href="https://openjfx.io/"><img src="https://img.shields.io/badge/JavaFX-17.0.2-blue.svg" alt="JavaFX"></a>
   <a href="#license"><img src="https://img.shields.io/badge/License-Non--Commercial%20EULA-red.svg" alt="License"></a>
-  <a href="https://zenodo.org/records/19736190"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.19736190-blue.svg" alt="DOI"></a>
+  <a href="https://zenodo.org/records/20299121"><img src="https://img.shields.io/badge/DOI-10.5281%2Fzenodo.20299121-blue.svg" alt="DOI"></a>
 </p>
 
 ---
@@ -125,7 +125,7 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 | Feature | Description |
 |:--------|:------------|
 | **Enrichr API Integration** | Over-Representation Analysis across seven pathway databases |
-| **Supported Databases** | Gene Ontology 2023 (BP, MF, CC), KEGG 2026, Reactome 2024, WikiPathways 2024, MSigDB Hallmark 2025. Database release versions are explicitly specified in each API call to ensure reproducibility of enrichment results across MagmaFlow versions |
+| **Supported Databases** | Gene Ontology 2026 (BP, MF, CC), KEGG 2026, Reactome 2024, WikiPathways 2024, MSigDB Hallmark 2020. Database release versions are explicitly specified in each API call to ensure reproducibility of enrichment results across MagmaFlow versions |
 | **Species Support** | Human, Mouse, and Cow (*Bos taurus*, GO only) |
 | **Analysis Modes** | All significant genes combined, or separate up/down-regulated analyses |
 | **Circle Plot Visualization** | Multi-layer circular diagrams with pathway enrichment, gene expression, and database annotations. A dedicated customization console allows full configuration of plot dimensions, node sizes, label font sizes, label orientation, edge weights, and color schemes |
@@ -143,22 +143,22 @@ MagmaFlow transforms volcano plot analysis from static display into dynamic biol
 ### Ready-to-Use Applications
 
 <p align="center">
-  <a href="https://zenodo.org/records/19736190/files/MagmaFlow-MacOs_arm64-10.0.5.dmg?download=1">
-    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.5%20macOS%20Apple%20Silicon-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS Apple Silicon" width="320">
+  <a href="https://zenodo.org/records/20299121/files/MagmaFlow-MacOsSilicon-arm64-v10.0.6.dmg?download=1">
+    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.6%20macOS%20Apple%20Silicon-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS Apple Silicon" width="320">
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://zenodo.org/records/19807133/files/MagmaFlow-x86_64_10.0.5.dmg?download=1">
-    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.5%20macOS%20Intel%20%28all%20versions%29-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS Intel" width="320">
+  <a href="https://zenodo.org/records/20299121/files/MagmaFlow-MacOsIntel-x86_64_v10.0.6.dmg?download=1">
+    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.6%20macOS%20Intel%20%28all%20versions%29-brightgreen?style=for-the-badge&logo=apple" alt="Download for macOS Intel" width="320">
   </a>
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <a href="https://zenodo.org/records/19807133/files/MagmaFlow-10.0.5_Windows.exe?download=1">
-    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.5%20for%20Windows-brightgreen?style=for-the-badge&logo=windows" alt="Download for Windows" width="280">
+  <a href="https://zenodo.org/records/20299121/files/MagmaFlow_Windows-v10.0.6.exe?download=1">
+    <img src="https://img.shields.io/badge/Download-MagmaFlow%20v10.0.6%20for%20Windows-brightgreen?style=for-the-badge&logo=windows" alt="Download for Windows" width="280">
   </a>
 </p>
 
 ### All Releases
 
-Visit our [Zenodo repository](https://zenodo.org/records/19736190) for all versions and additional files.
+Visit our [Zenodo repository](https://zenodo.org/records/20299121) for all versions and additional files.
 
 > **Note:** MagmaFlow is distributed as a pre-built application only. Source code is not publicly available. The software is maintained under the stewardship of the Knowledge and Technology Transfer Office (KTO) of the Université libre de Bruxelles (ULB).
 
@@ -201,7 +201,7 @@ Visit our [Zenodo repository](https://zenodo.org/records/19736190) for all versi
 | Step | Action |
 |:----:|:-------|
 | 1 | Confirm your Mac has an Apple M1/M2/M3/M4 chip: Apple menu → About This Mac → Chip |
-| 2 | Download `MagmaFlow-MacOs_arm64-10.0.5.dmg` |
+| 2 | Download `MagmaFlow-MacOsSilicon-arm64-v10.0.6.dmg` |
 | 3 | Open the DMG and drag MagmaFlow to your Applications folder |
 | 4 | Launch MagmaFlow from the Applications folder |
 
@@ -212,7 +212,7 @@ Visit our [Zenodo repository](https://zenodo.org/records/19736190) for all versi
 | Step | Action |
 |:----:|:-------|
 | 1 | Confirm your Mac has an Intel processor: Apple menu → About This Mac → Processor |
-| 2 | Download `MagmaFlow-x86_64_10.0.5.dmg` |
+| 2 | Download `MagmaFlow-MacOsIntel-x86_64_v10.0.6.dmg` |
 | 3 | Right-click the DMG and select **Open** |
 | 4 | Click **Open** in the security dialog |
 | 5 | Drag MagmaFlow to your Applications folder and launch normally |
@@ -298,7 +298,7 @@ This EULA is governed by Belgian law. Any dispute arising under it shall be subm
 
 If you use MagmaFlow in your research, please cite:
 
-> Buss, C. E. (2026). MagmaFlow_v10.0.5: MagmaFlow An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Enrichment Analysis (v10.0.5). Zenodo. https://doi.org/10.5281/zenodo.19807133
+> Buss, C. E. (2026). MagmaFlow_v10.0.6: MagmaFlow An Integrated Desktop Platform for Differential Expression Interpretation Through AI-Powered Literature Annotation and Enrichment Analysis (v10.0.6). Zenodo. https://doi.org/10.5281/zenodo.20299121
 
 ---
 
