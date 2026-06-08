@@ -300,7 +300,6 @@ This EULA is governed by Belgian law. Any dispute arising under it shall be subm
 
 If you use MagmaFlow in your research, please cite:
 
-Main Publication:
 Buss CE, Li A, Gilglioni EH, Bansal M, Singh SP, Bakiri L, Cardozo AK, Gurzov EN. MagmaFlow: A desktop platform for artificial intelligence-driven expression analysis. FEBS Open Bio. 2026 Jun 3. doi: 10.1002/2211-5463.70288.
 
 ---
