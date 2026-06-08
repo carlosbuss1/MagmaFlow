@@ -4,7 +4,9 @@
 
 <h1 align="center">MagmaFlow</h1>
 
-<h3 align="center"><i>An Integrated Desktop Platform for Differential Expression Interpretation Through<br/>AI-Powered Literature Annotation and Pathway Network Analysis</i></h3>
+<h3 align="center"><i>
+MagmaFlow: A desktop platform for<br/>artificial
+intelligence-driven expression analysis</i></h3>
 
 <p align="center">
   <a href="https://www.oracle.com/java/"><img src="https://img.shields.io/badge/Java-17+-orange.svg" alt="Java"></a>
